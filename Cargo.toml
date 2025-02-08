@@ -8,3 +8,4 @@ edition = "2021"
 [dependencies]
 hyprland = "0.4.0-beta.1"
 serde = {version = "1.0.217", features  = ["derive"]}
+csv = "1.3.1"
