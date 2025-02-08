@@ -12,7 +12,7 @@ fn main() {
 
     loop {
         if let Ok(Some(active_window)) = Client::get_active() {
-            let window_title = active_window.title.clone();
+            let window_title = active_window.initial_title.clone();
 
             if last_window_title.as_ref() != Some(&window_title) {
                 if let Some(prev_title) = &last_window_title {
