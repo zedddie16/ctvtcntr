@@ -1,4 +1,5 @@
 
+use hyprland::shared::HyprDataActiveOptional;
 use hyprland::data::{self, Client};
 use std::collections::HashMap;
 use std::time::{Duration, Instant};
@@ -10,7 +11,7 @@ fn main() {
     let mut last_switch_time = Instant::now();
 
     loop {
-        if let Ok(Some(active_window)) = Client::get_active()? {
+        if let Ok(Some(active_window)) = Client::get_active() {
             let window_title = active_window.title.clone();
 
             if last_window_title.as_ref() != Some(&window_title) {
