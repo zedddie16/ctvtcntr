@@ -90,6 +90,7 @@ name = "ctvtcntr"
 version = "0.1.0"
 dependencies = [
  "hyprland",
+ "serde",
 ]
 
 [[package]]
