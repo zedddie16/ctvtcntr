@@ -6,4 +6,4 @@ edition = "2021"
 
 
 [dependencies]
-hyprland = "0.3.13"
+hyprland = "0.4.0-beta.1"
