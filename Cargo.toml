@@ -9,3 +9,4 @@ edition = "2021"
 hyprland = "0.4.0-beta.1"
 serde = {version = "1.0.217", features  = ["derive"]}
 csv = "1.3.1"
+chrono = "0.4.39"
