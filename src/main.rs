@@ -1,5 +1,5 @@
-
 use chrono::Local;
+use csv::{ReaderBuilder, WriterBuilder};
 use hyprland::data::Client;
 use hyprland::shared::HyprDataActiveOptional; // Brings get_active() into scope
 use serde::{Deserialize, Serialize};
@@ -8,12 +8,12 @@ use std::fs::File;
 use std::io::{self, BufReader};
 use std::thread::sleep;
 use std::time::{Duration, Instant};
-use csv::{ReaderBuilder, WriterBuilder};
+use tracing::info;
 
 #[derive(Debug, Serialize, Deserialize)]
 struct Usage {
-    date: String,         // e.g. "2024-02-15"
-    window_name: String,  // e.g. "discord"
+    date: String,        // e.g. "2024-02-15"
+    window_name: String, // e.g. "discord"
     // usage time stored as a formatted string, e.g. "01h:23m:45s"
     total_time: String,
 }
@@ -69,7 +69,10 @@ fn read_usage_data(file_path: &str) -> io::Result<HashMap<(String, String), Dura
             // Normalize the process name (to merge similar entries).
             let key = (record.date, extract_process_name(&record.window_name));
             let dur = parse_duration_str(&record.total_time);
-            usage_map.entry(key).and_modify(|d| *d += dur).or_insert(dur);
+            usage_map
+                .entry(key)
+                .and_modify(|d| *d += dur)
+                .or_insert(dur);
         }
     }
     Ok(usage_map)
@@ -77,7 +80,10 @@ fn read_usage_data(file_path: &str) -> io::Result<HashMap<(String, String), Dura
 
 /// Writes the current usage data to the CSV file.
 /// Each record is stored as a row with date, window_name, and total_time (formatted).
-fn write_usage_data(file_path: &str, usage_map: &HashMap<(String, String), Duration>) -> io::Result<()> {
+fn write_usage_data(
+    file_path: &str,
+    usage_map: &HashMap<(String, String), Duration>,
+) -> io::Result<()> {
     let file = File::create(file_path)?;
     let mut csv_writer = WriterBuilder::new().has_headers(true).from_writer(file);
     for ((date, window_name), duration) in usage_map {
@@ -100,7 +106,10 @@ fn update_usage(
     elapsed: Duration,
 ) {
     let key = (date.to_string(), window_name.to_string());
-    usage_map.entry(key).and_modify(|d| *d += elapsed).or_insert(elapsed);
+    usage_map
+        .entry(key)
+        .and_modify(|d| *d += elapsed)
+        .or_insert(elapsed);
 }
 
 /// Monitors the active window and updates usage data:
@@ -118,8 +127,8 @@ fn monitor_active_window(usage_map: &mut HashMap<(String, String), Duration>) ->
             let mut process_name = extract_process_name(&raw_title);
             if process_name.is_empty() {
                 if !active_window.class.is_empty() {
-                    process_name = active_window.class ;
-                }else {
+                    process_name = active_window.class;
+                } else {
                     sleep(Duration::from_millis(500));
                     continue;
                 }
@@ -132,7 +141,7 @@ fn monitor_active_window(usage_map: &mut HashMap<(String, String), Duration>) ->
                 }
                 last_key = Some(current_key.clone());
                 last_switch_time = Instant::now();
-                println!(
+                info!(
                     "Switched to: {} on {} at {:?}",
                     current_key.1, current_key.0, last_switch_time
                 );
@@ -146,7 +155,10 @@ fn monitor_active_window(usage_map: &mut HashMap<(String, String), Duration>) ->
 }
 
 fn main() -> io::Result<()> {
+    tracing::subscriber::set_global_default(tracing_subscriber::FmtSubscriber::new())
+        .expect("setting default subscriber failed");
     // Load existing usage data (if any), then start monitoring.
     let mut usage_map = read_usage_data("app_usage.csv")?;
+    info!("readed usage data");
     monitor_active_window(&mut usage_map)
 }
