@@ -120,6 +120,7 @@ fn monitor_active_window(usage_map: &mut HashMap<(String, String), Duration>) ->
     let mut last_key: Option<(String, String)> = None; // (date, process name)
     let mut last_switch_time = Instant::now();
 
+    info!("starting active window monitor loop");
     loop {
         let current_date = Local::now().format("%Y-%m-%d").to_string();
         if let Ok(Some(active_window)) = Client::get_active() {
@@ -141,10 +142,7 @@ fn monitor_active_window(usage_map: &mut HashMap<(String, String), Duration>) ->
                 }
                 last_key = Some(current_key.clone());
                 last_switch_time = Instant::now();
-                info!(
-                    "Switched to: {} on {} at {:?}",
-                    current_key.1, current_key.0, last_switch_time
-                );
+                info!("switched to: {}", current_key.1);
             }
         }
 
