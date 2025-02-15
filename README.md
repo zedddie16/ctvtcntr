@@ -12,13 +12,15 @@ cargo build --release
 ```
 then create ```~/.config/systemd/user/ctvtcntr.service``` with same arguments as in repo, but modify path to actual compiled binary and app_activity.csv file.
 
-```ini
+
+```
 [Unit]
-Description=ctvtcntr is simple activity counter
+Description=ctvtcntr is activity counter of mine
 
 [Service]
 WorkingDirectory=/home/tuturuu/dev/ctvtcntr/
 ExecStart=/home/tuturuu/dev/ctvtcntr/target/release/ctvtcntr
+ExecStartPre=/bin/sleep 50
 Restart=on-failure
 
 [Install]
