@@ -1,7 +1,7 @@
 use chrono::Local;
 use csv::{ReaderBuilder, WriterBuilder};
 use hyprland::data::Client;
-use hyprland::shared::HyprDataActiveOptional; // Brings get_active() into scope
+use hyprland::shared::HyprDataActiveOptional;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::fs::File;
@@ -12,8 +12,8 @@ use tracing::info;
 
 #[derive(Debug, Serialize, Deserialize)]
 struct Usage {
-    date: String,        // e.g. "2024-02-15"
-    window_name: String, // e.g. "discord"
+    date: String,
+    window_name: String,
     // usage time stored as a formatted string, e.g. "01h:23m:45s"
     total_time: String,
 }
@@ -45,6 +45,11 @@ fn parse_duration_str(s: &str) -> Duration {
 /// - If a " | " separator is present, only the part before it is used.
 fn extract_process_name(window_title: &str) -> String {
     let trimmed = window_title.trim();
+
+    if trimmed.contains("Telegram") {
+        return "Telegram".to_string();
+    }
+
     if trimmed.to_lowercase().starts_with("new tab -") {
         return trimmed["New Tab -".len()..].trim().to_string();
     }
@@ -126,11 +131,21 @@ fn monitor_active_window(usage_map: &mut HashMap<(String, String), Duration>) ->
         if let Ok(Some(active_window)) = Client::get_active() {
             let raw_title = active_window.initial_title.clone();
             let mut process_name = extract_process_name(&raw_title);
+            
+            // Handle Kitty windows running nvim
+            if active_window.class == "kitty" {
+                if active_window.title.contains("nvim") {
+                    process_name = "nvim".to_string();
+                } else {
+                    process_name = "kitty".to_string();
+                }
+            }
+            
             if process_name.is_empty() {
                 if !active_window.class.is_empty() {
                     process_name = active_window.class;
                 } else {
-                    sleep(Duration::from_millis(500));
+                    sleep(Duration::from_millis(50));
                     continue;
                 }
             }
@@ -148,7 +163,7 @@ fn monitor_active_window(usage_map: &mut HashMap<(String, String), Duration>) ->
 
         // Write updated usage data to CSV.
         write_usage_data("app_usage.csv", usage_map)?;
-        sleep(Duration::from_millis(500));
+        sleep(Duration::from_millis(50));
     }
 }
 
