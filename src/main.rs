@@ -8,6 +8,7 @@ use std::fs::File;
 use std::io::{self, BufReader};
 use std::thread::sleep;
 use std::time::{Duration, Instant};
+use regex::Regex;
 use tracing::info;
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -131,7 +132,7 @@ fn monitor_active_window(usage_map: &mut HashMap<(String, String), Duration>) ->
         if let Ok(Some(active_window)) = Client::get_active() {
             let raw_title = active_window.initial_title.clone();
             let mut process_name = extract_process_name(&raw_title);
-            
+
             // Handle Kitty windows running nvim
             if active_window.class == "kitty" {
                 if active_window.title.contains("nvim") {
@@ -140,10 +141,17 @@ fn monitor_active_window(usage_map: &mut HashMap<(String, String), Duration>) ->
                     process_name = "kitty".to_string();
                 }
             }
-            
+
             if process_name.is_empty() {
                 if !active_window.class.is_empty() {
                     process_name = active_window.class;
+                    if process_name == "jetbrains-rustrover".to_string() {
+                        let rexex_str = Regex::new(r"^(.+?)\s*–\s*").unwrap();
+                        if let Some(captures) = rexex_str.captures(active_window.title.as_str()) {
+                            let extracted = captures.get(1).unwrap().as_str();
+                            process_name = format!("RustRover -> {}", extracted);
+                        } else {process_name = "RustRover".to_string();}
+                    }
                 } else {
                     sleep(Duration::from_millis(50));
                     continue;
