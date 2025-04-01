@@ -47,6 +47,9 @@ fn parse_duration_str(s: &str) -> Duration {
 fn extract_process_name(window_title: &str) -> String {
     let trimmed = window_title.trim();
 
+    if trimmed.contains("Discord") {
+        return "Discord".to_string();
+    }
     if trimmed.contains("Telegram") {
         return "Telegram".to_string();
     }
