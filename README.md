@@ -16,12 +16,14 @@ then create ```~/.config/systemd/user/ctvtcntr.service``` with same arguments as
 ```
 [Unit]
 Description=ctvtcntr is activity counter of mine
+After=graphical-session.target
 
 [Service]
+EnvironmentFile=/tmp/hypr/$HYPRLAND_INSTANCE_SIGNATURE/env
 WorkingDirectory=/home/tuturuu/dev/production/activity_counter/
 ExecStart=/home/tuturuu/dev/production/activity_counter/target/release/ctvtcntr
-ExecStartPre=/bin/bash -c 'while [ -z "$HYPRLAND_INSTANCE_SIGNATURE" ]; do sleep 5; done'
 Restart=on-failure
+ConditionPathExists=/tmp/hypr/$HYPRLAND_INSTANCE_SIGNATURE/env
 
 [Install]
 WantedBy=default.target
