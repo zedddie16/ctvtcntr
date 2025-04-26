@@ -12,7 +12,7 @@ use std::time::{Duration, Instant};
 use tracing::info;
 
 mod match_title;
-
+use match_title::extract_process_name;
 #[derive(Debug, Serialize, Deserialize)]
 struct Usage {
     date: String,
@@ -41,34 +41,6 @@ fn parse_duration_str(s: &str) -> Duration {
     let minutes = parts[1].trim_end_matches('m').parse::<u64>().unwrap_or(0);
     let seconds = parts[2].trim_end_matches('s').parse::<u64>().unwrap_or(0);
     Duration::from_secs(hours * 3600 + minutes * 60 + seconds)
-}
-
-/// Normalizes the window title into a process name:
-/// - Trims whitespace.
-/// - If the title starts with "New Tab -", that prefix is removed (case‑insensitive).
-/// - If a " | " separator is present, only the part before it is used.
-// TODO: Remove manual check, improve Regex. (may be move these checks somwhere else as a big
-// match statement.)
-fn extract_process_name(window_title: &str) -> String {
-    let trimmed = window_title.trim();
-
-    if trimmed.contains("Discord") {
-        return "Discord".to_string();
-    }
-    if trimmed.contains("Telegram") {
-        return "Telegram".to_string();
-    }
-
-    if trimmed.to_lowercase().starts_with("new tab -") {
-        return trimmed["New Tab -".len()..].trim().to_string();
-    }
-    if trimmed.to_lowercase().starts_with(r#"win"#) {
-        return "sub_window".to_string();
-    }
-    if let Some(idx) = trimmed.find(" | ") {
-        return trimmed[..idx].trim().to_string();
-    }
-    trimmed.to_string()
 }
 
 /// Reads usage data from the CSV file into a HashMap keyed by (date, window_name).
