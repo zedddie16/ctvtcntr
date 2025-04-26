@@ -11,6 +11,8 @@ use std::thread::sleep;
 use std::time::{Duration, Instant};
 use tracing::info;
 
+mod match_title;
+
 #[derive(Debug, Serialize, Deserialize)]
 struct Usage {
     date: String,
@@ -29,7 +31,7 @@ fn format_duration(duration: Duration) -> String {
 }
 
 /// Parses a duration string in the format "HHh:MMm:SSs" back into a Duration.
-/// TODO: rewrite conversion and deserealization
+// TODO: rewrite conversion and deserealization
 fn parse_duration_str(s: &str) -> Duration {
     let parts: Vec<&str> = s.split(':').collect();
     if parts.len() != 3 {
@@ -45,8 +47,8 @@ fn parse_duration_str(s: &str) -> Duration {
 /// - Trims whitespace.
 /// - If the title starts with "New Tab -", that prefix is removed (case‑insensitive).
 /// - If a " | " separator is present, only the part before it is used.
-/// TODO: Remove manual check, improve Regex. (may be move these checks somwhere else as a big
-/// match statement.)
+// TODO: Remove manual check, improve Regex. (may be move these checks somwhere else as a big
+// match statement.)
 fn extract_process_name(window_title: &str) -> String {
     let trimmed = window_title.trim();
 
