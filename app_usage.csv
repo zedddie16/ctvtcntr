@@ -6,7 +6,7 @@ date,window_name,total_time
 2025-04-10,Cursor,00h:06m:47s
 2025-04-11,Cursor,00h:05m:21s
 2025-04-03,Spotify,00h:19m:27s
-2025-04-26,Spotify Premium,00h:00m:01s
+2025-04-26,Spotify Premium,00h:00m:05s
 2025-04-12,Cursor,00h:46m:05s
 2025-04-01,Spotify,00h:09m:45s
 2025-04-12,RustRover -> activity_counter,00h:00m:56s
@@ -32,8 +32,9 @@ date,window_name,total_time
 2025-04-16,Option Reference - Configuration - Brave,00h:11m:44s
 2025-04-03,Unlock Keyring,00h:00m:04s
 2025-04-05,Ghostty: Terminal Inspector,00h:00m:05s
+2025-04-26,Telegram,00h:03m:18s
 2025-04-12,Spotify,02h:38m:32s
-2025-04-26,New Tab - Brave,00h:03m:23s
+2025-04-26,New Tab - Brave,00h:08m:11s
 2025-04-16,MControlCenter,00h:00m:03s
 2025-04-11,Spotify,00h:39m:20s
 2025-04-06,menu window,00h:00m:10s
@@ -93,7 +94,7 @@ date,window_name,total_time
 2025-04-15,rofi - Applications:,00h:02m:43s
 2025-04-03,Choose an image,00h:00m:23s
 2025-04-09,Telegram,01h:40m:41s
-2025-04-26,OBS 31.0.3 - Profile: Untitled - Scenes: Untitled,00h:00m:14s
+2025-04-26,OBS 31.0.3 - Profile: Untitled - Scenes: Untitled,00h:00m:16s
 2025-04-05,Loading…,00h:00m:24s
 2025-04-07,Spotify,00h:04m:02s
 2025-04-26,Spotify,00h:41m:01s
@@ -131,7 +132,7 @@ date,window_name,total_time
 2025-04-01,Select Recording Directory,00h:00m:16s
 2025-04-18,rofi - Applications:,00h:01m:00s
 2025-04-07,Telegram,00h:25m:31s
-2025-04-26,NeoVim,01h:13m:21s
+2025-04-26,NeoVim,01h:38m:37s
 2025-04-04,Settings,00h:01m:13s
 2025-04-02,Unsaved packets…,00h:00m:01s
 2025-04-04,Хармфульский клуб любителей математики - exclusive content on Boosty - Brave,00h:27m:37s
@@ -161,7 +162,7 @@ date,window_name,total_time
 2025-04-10,rofi - Applications:,00h:00m:19s
 2025-04-01,Create Git Repository,00h:00m:01s
 2025-04-15,Confirm Exit,00h:00m:01s
-2025-04-26,Loading…,00h:00m:00s
+2025-04-26,Loading…,00h:00m:01s
 2025-04-17,Spotify,00h:00m:07s
 2025-04-13,Media viewer,00h:00m:37s
 2025-04-12,Unable to access “fleshka”,00h:00m:31s
@@ -187,7 +188,7 @@ date,window_name,total_time
 2025-04-12,OBS 31.0.3 - Profile: Untitled - Scenes: Untitled,00h:01m:25s
 2025-04-15,RustRover -> SoundList,00h:29m:30s
 2025-04-16,Cursor,00h:51m:22s
-2025-04-26,Ghostty,00h:01m:09s
+2025-04-26,Ghostty,00h:01m:23s
 2025-04-16,Media viewer,00h:01m:17s
 2025-04-19,Vault - Obsidian v1.8.9,00h:00m:03s
 2025-04-13,Save project,00h:00m:04s
