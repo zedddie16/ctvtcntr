@@ -5,13 +5,16 @@ use hyprland::shared::HyprDataActiveOptional;
 use regex::Regex;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
+use std::env;
 use std::fs::File;
 use std::io::{self, BufReader};
+use std::path::Path;
 use std::thread::sleep;
 use std::time::{Duration, Instant};
-use tracing::info;
+use tracing::{error, info};
 
 mod match_title;
+mod startup;
 use match_title::extract_process_name;
 #[derive(Debug, Serialize, Deserialize)]
 struct Usage {
