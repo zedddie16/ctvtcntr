@@ -13,8 +13,9 @@ use std::thread::sleep;
 use std::time::{Duration, Instant};
 use tracing::{error, info};
 
-mod match_title;
 mod startup;
+use startup::wait_for_hyprland_socket;
+mod match_title;
 use match_title::extract_process_name;
 #[derive(Debug, Serialize, Deserialize)]
 struct Usage {
@@ -171,6 +172,13 @@ fn monitor_active_window(usage_map: &mut HashMap<(String, String), Duration>) ->
 fn main() -> io::Result<()> {
     tracing::subscriber::set_global_default(tracing_subscriber::FmtSubscriber::new())
         .expect("setting default subscriber failed");
+
+    // wait for hyprland IPC
+    if let Err(e) = wait_for_hyprland_socket(60) {
+        // Wait for up to 60 seconds
+        error!("Error waiting for Hyprland: {}", e);
+        return Err(io::Error::new(io::ErrorKind::Other, e));
+    }
     // Load existing usage data (if any), then start monitoring.
     let mut usage_map = read_usage_data("app_usage.csv")?;
     info!("readed usage data");
