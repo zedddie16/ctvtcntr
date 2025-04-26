@@ -19,14 +19,14 @@ Description=ctvtcntr is activity counter of mine
 After=graphical-session.target
 
 [Service]
-EnvironmentFile=/tmp/hypr/$HYPRLAND_INSTANCE_SIGNATURE/env
+; EnvironmentFile=/tmp/hypr/$HYPRLAND_INSTANCE_SIGNATURE/env
 WorkingDirectory=/home/tuturuu/dev/production/activity_counter/
 ExecStart=/home/tuturuu/dev/production/activity_counter/target/release/ctvtcntr
 Restart=on-failure
-ConditionPathExists=/tmp/hypr/$HYPRLAND_INSTANCE_SIGNATURE/env
+; ConditionPathExists=/tmp/hypr/$HYPRLAND_INSTANCE_SIGNATURE/env
 
 [Install]
-WantedBy=default.target
+WantedBy=graphical-session.target
 ```
 then just
 
@@ -38,4 +38,8 @@ systemctl --user start ctvtcntr.service
 to check status do not forget add --user flag, otherwise it wont show it.
 ```sh
 systemctl status --user ctvtcntr
+```
+
+```config
+exec-once = systemctl --user import-environment XDG_RUNTIME_DIR HYPRLAND_INSTANCE_SIGNATURE DISPLAY WAYLAND_DISPLAY
 ```
