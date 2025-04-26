@@ -115,12 +115,19 @@ fn monitor_active_window(usage_map: &mut HashMap<(String, String), Duration>) ->
             let raw_title = active_window.initial_title.clone();
             let mut process_name = extract_process_name(&raw_title);
 
+            if active_window.class == "com.mitchellh.ghostty" {
+                if active_window.title.contains("nvim") {
+                    process_name = "NeoVim".to_string();
+                } else {
+                    process_name = "Ghostty".to_string();
+                }
+            }
             // Handle Kitty windows running nvim
             if active_window.class == "kitty" {
                 if active_window.title.contains("nvim") {
-                    process_name = "nvim".to_string();
+                    process_name = "NeoVim".to_string();
                 } else {
-                    process_name = "kitty".to_string();
+                    process_name = "Kitty".to_string();
                 }
             }
 
