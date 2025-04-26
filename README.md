@@ -32,3 +32,8 @@ then just
 systemctl --user enable ctvtcntr.service
 systemctl --user start ctvtcntr.service
 ```
+
+to check status do not forget add --user flag, otherwise it wont show it.
+```sh
+systemctl status --user ctvtcntr
+```

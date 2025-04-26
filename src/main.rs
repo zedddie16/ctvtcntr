@@ -2,13 +2,13 @@ use chrono::Local;
 use csv::{ReaderBuilder, WriterBuilder};
 use hyprland::data::Client;
 use hyprland::shared::HyprDataActiveOptional;
+use regex::Regex;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::fs::File;
 use std::io::{self, BufReader};
 use std::thread::sleep;
 use std::time::{Duration, Instant};
-use regex::Regex;
 use tracing::info;
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -129,6 +129,8 @@ fn monitor_active_window(usage_map: &mut HashMap<(String, String), Duration>) ->
     let mut last_key: Option<(String, String)> = None; // (date, process name)
     let mut last_switch_time = Instant::now();
 
+    let rexex_str = Regex::new(r"^(.+?)\s*–\s*").unwrap(); // trims active title of app
+
     info!("starting active window monitor loop");
     loop {
         let current_date = Local::now().format("%Y-%m-%d").to_string();
@@ -148,12 +150,13 @@ fn monitor_active_window(usage_map: &mut HashMap<(String, String), Duration>) ->
             if process_name.is_empty() {
                 if !active_window.class.is_empty() {
                     process_name = active_window.class;
-                    if process_name == "jetbrains-rustrover".to_string() {
-                        let rexex_str = Regex::new(r"^(.+?)\s*–\s*").unwrap();
+                    if process_name == *"jetbrains-rustrover" {
                         if let Some(captures) = rexex_str.captures(active_window.title.as_str()) {
                             let extracted = captures.get(1).unwrap().as_str();
                             process_name = format!("RustRover -> {}", extracted);
-                        } else {process_name = "RustRover".to_string();}
+                        } else {
+                            process_name = "RustRover".to_string();
+                        }
                     }
                 } else {
                     sleep(Duration::from_millis(50));
