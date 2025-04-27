@@ -10,7 +10,8 @@ Compile binary
 ```sh
 cargo build --release
 ```
-then create ```~/.config/systemd/user/ctvtcntr.service``` with same arguments as in repo, but modify the path to actual compiled binary and app_activity.csv file.
+then create ```~/.config/systemd/user/ctvtcntr.service``` with same arguments as in repo, but
+modify the path to match actual compiled binary path and app_activity.csv file.
 
 
 ```
@@ -42,5 +43,5 @@ systemctl status --user ctvtcntr
 
 if service loading fails during listeting for env, add following line in hyprland.conf
 ```config
-exec-once = systemctl --user import-environment XDG_RUNTIME_DIR HYPRLAND_INSTANCE_SIGNATURE DISPLAY WAYLAND_DISPLAY
+exec-once = systemctl --user import-environment XDG_RUNTIME_DIR HYPRLAND_INSTANCE_SIGNATURE
 ```
