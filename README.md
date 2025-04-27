@@ -40,6 +40,7 @@ to check status do not forget add --user flag, otherwise it wont show it.
 systemctl status --user ctvtcntr
 ```
 
+if service loading fails during listeting for env, add following line in hyprland.conf
 ```config
 exec-once = systemctl --user import-environment XDG_RUNTIME_DIR HYPRLAND_INSTANCE_SIGNATURE DISPLAY WAYLAND_DISPLAY
 ```
