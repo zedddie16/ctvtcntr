@@ -106,7 +106,7 @@ fn update_usage(
 pub fn monitor_active_window(
     usage_map: &mut HashMap<(String, String), Duration>,
 ) -> io::Result<()> {
-    let running = Arc::new(AtomicBool::new(true));
+    let running = Arc::new(AtomicBool::new(true)); // creating app's state
     let r = running.clone();
 
     ctrlc::set_handler(move || {
@@ -154,7 +154,7 @@ pub fn monitor_active_window(
                         }
                     }
                 } else {
-                    sleep(Duration::from_millis(50));
+                    sleep(Duration::from_millis(500));
                     continue;
                 }
             }
@@ -172,7 +172,7 @@ pub fn monitor_active_window(
 
         // Write updated usage data to CSV.
         write_usage_data("app_usage.csv", usage_map)?;
-        sleep(Duration::from_millis(50));
+        sleep(Duration::from_millis(500));
     }
     info!("Shutting down");
     Ok(())
