@@ -56,8 +56,8 @@ pub fn read_usage_data(file_path: &str) -> io::Result<HashMap<(String, String), 
             let dur = parse_duration_str(&record.total_time);
             usage_map
                 .entry(key)
-                .and_modify(|d| *d += dur)
-                .or_insert(dur);
+                .and_modify(|d| *d += dur) // if a record exists modify.
+                .or_insert(dur); // if it doesn't, create new record.
         }
     }
     Ok(usage_map)
