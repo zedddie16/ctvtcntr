@@ -8,6 +8,8 @@ use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::fs::File;
 use std::io::{self, BufReader};
+use std::sync::atomic::{AtomicBool, Ordering};
+use std::sync::Arc;
 use std::thread::sleep;
 use std::time::{Duration, Instant};
 use tracing::info;
@@ -104,13 +106,21 @@ fn update_usage(
 pub fn monitor_active_window(
     usage_map: &mut HashMap<(String, String), Duration>,
 ) -> io::Result<()> {
+    let running = Arc::new(AtomicBool::new(true));
+    let r = running.clone();
+
+    ctrlc::set_handler(move || {
+        r.store(false, Ordering::SeqCst);
+    })
+    .expect("Error setting Ctrl+C handler");
+
     let mut last_key: Option<(String, String)> = None; // (date, process name)
     let mut last_switch_time = Instant::now();
 
     let rexex_str = Regex::new(r"^(.+?)\s*–\s*").unwrap(); // trims active title of app
 
     info!("starting active window monitor loop");
-    loop {
+    while running.load(Ordering::SeqCst) {
         let current_date = Local::now().format("%Y-%m-%d").to_string();
         if let Ok(Some(active_window)) = Client::get_active() {
             let raw_title = active_window.initial_title.clone();
@@ -164,4 +174,6 @@ pub fn monitor_active_window(
         write_usage_data("app_usage.csv", usage_map)?;
         sleep(Duration::from_millis(50));
     }
+    info!("Shutting down");
+    Ok(())
 }
