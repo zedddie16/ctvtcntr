@@ -47,8 +47,8 @@ fn parse_duration_str(s: &str) -> Duration {
 /// Reads usage data from the CSV file into a HashMap keyed by (date, window_name).
 /// If the file does not exist, returns an empty map.
 pub fn read_usage_data(file_path: &str) -> io::Result<BTreeMap<(String, String), Duration>> {
-    // TODO: may ve can be improved by taking in only records from csv that can be changed now.
-    // then will need to append on cvs instead of rewriting on evert usage_write
+    // TODO: may ve can be improved by deserializing only editable records from csv.
+    // then will need to append on cvs instead of complete rewriting
     let mut usage_map = BTreeMap::new();
     if let Ok(file) = File::open(file_path) {
         let reader = BufReader::new(file);
