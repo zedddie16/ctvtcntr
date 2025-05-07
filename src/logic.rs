@@ -127,7 +127,10 @@ pub fn monitor_active_window(
         if let Ok(Some(active_window)) = Client::get_active() {
             let raw_title = active_window.initial_title.clone();
             let mut process_name = extract_process_name(&raw_title);
-
+            // if active_window.class == "obsidian" {
+            //    process_name = *active_window.title.
+            //    try_4 - Vault - Obsidian v1.8.10:
+            // }
             if active_window.class == "com.mitchellh.ghostty" {
                 if active_window.title.contains("nvim") {
                     process_name = "NeoVim".to_string();

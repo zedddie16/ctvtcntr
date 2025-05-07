@@ -9,6 +9,7 @@ pub fn extract_process_name(window_title: &str) -> String {
 
     match trimmed {
         t if t.contains("discord") => "Discord".to_string(),
+        // t if t.contains("Obsidian") => "Obsidian".to_string(),
         t if t.contains("Telegram") => "Telegram".to_string(),
         t if t.contains("Sublime Text") => "Sublime Text".to_string(),
         t if t.starts_with("new tab -") => t["new tab -".len()..].trim().to_string(),
