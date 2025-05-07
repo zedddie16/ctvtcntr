@@ -5,7 +5,7 @@ use hyprland::data::Client;
 use hyprland::shared::HyprDataActiveOptional;
 use regex::Regex;
 use serde::{Deserialize, Serialize};
-use std::collections::HashMap;
+use std::collections::BTreeMap;
 use std::fs::File;
 use std::io::{self, BufReader};
 use std::sync::atomic::{AtomicBool, Ordering};
@@ -46,10 +46,10 @@ fn parse_duration_str(s: &str) -> Duration {
 
 /// Reads usage data from the CSV file into a HashMap keyed by (date, window_name).
 /// If the file does not exist, returns an empty map.
-pub fn read_usage_data(file_path: &str) -> io::Result<HashMap<(String, String), Duration>> {
+pub fn read_usage_data(file_path: &str) -> io::Result<BTreeMap<(String, String), Duration>> {
     // TODO: may ve can be improved by taking in only records from csv that can be changed now.
     // then will need to append on cvs instead of rewriting on evert usage_write
-    let mut usage_map = HashMap::new();
+    let mut usage_map = BTreeMap::new();
     if let Ok(file) = File::open(file_path) {
         let reader = BufReader::new(file);
         let mut csv_reader = ReaderBuilder::new().has_headers(true).from_reader(reader);
@@ -71,7 +71,7 @@ pub fn read_usage_data(file_path: &str) -> io::Result<HashMap<(String, String), 
 /// Each record is stored as a row with date, window_name, and total_time (formatted).
 fn write_usage_data(
     file_path: &str,
-    usage_map: &HashMap<(String, String), Duration>,
+    usage_map: &BTreeMap<(String, String), Duration>,
 ) -> io::Result<()> {
     let file = File::create(file_path)?;
     let mut csv_writer = WriterBuilder::new().has_headers(true).from_writer(file);
@@ -89,7 +89,7 @@ fn write_usage_data(
 
 /// Updates the usage map by adding elapsed time for the given (date, window_name) key.
 fn update_usage(
-    usage_map: &mut HashMap<(String, String), Duration>,
+    usage_map: &mut BTreeMap<(String, String), Duration>,
     date: &str,
     window_name: &str,
     elapsed: Duration,
@@ -106,7 +106,7 @@ fn update_usage(
 /// - If a record for the current date and process already exists, increments its usage time.
 /// - Otherwise, creates a new record for today.
 pub fn monitor_active_window(
-    usage_map: &mut HashMap<(String, String), Duration>,
+    usage_map: &mut BTreeMap<(String, String), Duration>,
 ) -> io::Result<()> {
     let running = Arc::new(AtomicBool::new(true)); // creating app's state
     let r = running.clone();
