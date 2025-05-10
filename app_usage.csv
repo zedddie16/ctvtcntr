@@ -1,54 +1,134 @@
 date,window_name,total_time
-2025-05-03,Telegram,00h:22m:46s
-2025-05-03,zedddie16 (matthew) - brave,00h:06m:54s
-2025-05-06,Telegram,01h:42m:34s
-2025-05-06,media viewer,00h:00m:31s
-2025-05-06,gtk application,00h:00m:02s
-2025-05-04,neovim,00h:33m:50s
-2025-05-06,brave,03h:11m:16s
-2025-05-04,www.pinterest.com wants to save,00h:00m:03s
-2025-05-06,Discord,00h:03m:02s
-2025-05-04,gtk application,00h:00m:02s
+2025-05-09,Telegram (21079),00h:00m:09s
 2025-05-06,Spotify,00h:00m:01s
-2025-05-04,github.com wants to open,00h:00m:08s
 2025-05-04,Telegram,00h:35m:41s
-2025-05-06,ghostty,00h:30m:50s
-2025-05-06,NeoVim,00h:00m:07s
-2025-05-04,choose an image,00h:00m:03s
-2025-05-03,neovim,00h:34m:57s
-2025-05-04,spotify,00h:12m:13s
-2025-05-04,vault - obsidian v1.8.10,00h:16m:53s
-2025-05-06,https://www.qutebrowser.org/quickstart.html - qutebrowser,00h:02m:27s
-2025-05-06,unlock keyring,00h:00m:02s
-2025-05-06,vault - obsidian v1.8.10,00h:55m:21s
-2025-05-04,brave,04h:31m:33s
-2025-05-04,mcontrolcenter,00h:00m:03s
-2025-05-07,Ghostty,00h:03m:05s
-2025-05-06,https://start.duckduckgo.com - qutebrowser,00h:01m:44s
-2025-05-06,spotify,00h:24m:47s
-2025-05-06,bluetooth authentication,00h:00m:12s
-2025-05-07,Sublime Text,00h:01m:41s
-2025-05-07,Vault - Obsidian v1.8.10,00h:28m:36s
 2025-05-04,zedddie16 (matthew) - brave,00h:00m:07s
+2025-05-08,Telegram (20123),00h:01m:01s
+2025-05-10,ticktick,00h:00m:49s
+2025-05-08,Spotify,00h:29m:44s
 2025-05-04,ghostty,01h:00m:07s
-2025-05-07,NeoVim,00h:31m:01s
-2025-05-04,white to move,00h:03m:52s
-2025-05-04,unlock keyring,00h:00m:03s
-2025-05-07,rofi - Applications:,00h:00m:07s
-2025-05-03,brave,00h:23m:54s
-2025-05-04,media viewer,00h:01m:19s
-2025-05-04,rofi - applications:,00h:00m:45s
-2025-05-06,neovim,00h:55m:53s
-2025-05-06,ugreen hitune max5c,00h:00m:12s
-2025-05-04,ugreen hitune max5c,00h:00m:00s
-2025-05-07,Loading…,00h:00m:17s
-2025-05-04,i.pinimg.com wants to save,00h:00m:07s
-2025-05-06,bluetooth devices,00h:01m:09s
-2025-05-07,Select App,00h:00m:06s
-2025-05-03,ghostty,00h:06m:26s
+2025-05-07,Ghostty,00h:03m:08s
+2025-05-06,bluetooth authentication,00h:00m:12s
+2025-05-06,unlock keyring,00h:00m:02s
+2025-05-09,rofi - Applications:,00h:01m:04s
+2025-05-09,OBS 31.0.3 - Profile: Untitled - Scenes: Untitled,00h:00m:10s
 2025-05-03,rofi - applications:,00h:00m:22s
-2025-05-03,unlock keyring,00h:00m:03s
-2025-05-04,bluetooth devices,00h:00m:07s
+2025-05-09,Choose an image,00h:00m:05s
+2025-05-08,vesktop,00h:00m:02s
+2025-05-07,Sublime Text,00h:01m:41s
+2025-05-09,github.com wants to open,00h:00m:02s
+2025-05-09,Discord,00h:03m:17s
+2025-05-08,Open Files,00h:00m:19s
+2025-05-04,gtk application,00h:00m:02s
+2025-05-06,Discord,00h:03m:02s
+2025-05-09,Telegram (20121),00h:01m:02s
+2025-05-08,Telegram (20093),00h:08m:21s
+2025-05-06,NeoVim,00h:00m:07s
+2025-05-04,rofi - applications:,00h:00m:45s
+2025-05-08,REST API Documentation - Brave,00h:14m:04s
+2025-05-06,https://www.qutebrowser.org/quickstart.html - qutebrowser,00h:02m:27s
+2025-05-09,~/dev/production/activity_counter/app_usage.csv (src) - Sublime Text (UNREGISTERED),00h:01m:44s
+2025-05-08,github.com wants to open,00h:00m:02s
+2025-05-09,UGREEN HiTune Max5c,00h:00m:00s
+2025-05-07,Select App,00h:00m:06s
+2025-05-04,media viewer,00h:01m:19s
+2025-05-09,Media viewer,00h:01m:01s
+2025-05-03,neovim,00h:34m:57s
+2025-05-09,Telegram (21096),00h:02m:06s
+2025-05-10,Spotify,00h:03m:05s
+2025-05-09,i.pinimg.com wants to save,00h:00m:09s
+2025-05-08,Telegram (20121),00h:28m:23s
+2025-05-09,Reverso Define - The Ultimate English Dictionary - Brave,00h:19m:32s
+2025-05-06,gtk application,00h:00m:02s
+2025-05-08,rofi - Applications:,00h:00m:40s
+2025-05-09,upload.wikimedia.org/wikipedia/commons/9/94/LL-Q9292_%28aze%29-Azerbaijani_audiorecordings-bank.wav - Brave,00h:00m:13s
+2025-05-09,Loading…,00h:00m:47s
+2025-05-08,zedddie16 (Matthew) - Brave,00h:38m:32s
+2025-05-06,neovim,00h:55m:53s
 2025-05-04,pinterest - brave,00h:51m:53s
-2025-05-06,rofi - applications:,00h:00m:59s
+2025-05-08,~/dev/production/activity_counter/app_usage.csv (src) - Sublime Text (UNREGISTERED),00h:07m:28s
+2025-05-10,Vault - Obsidian v1.8.10,01h:29m:21s
 2025-05-06,vesktop,00h:00m:09s
+2025-05-03,brave,00h:23m:54s
+2025-05-08,Vault - Obsidian v1.8.10,00h:26m:52s
+2025-05-04,brave,04h:31m:33s
+2025-05-09,Spotify,00h:29m:00s
+2025-05-08,NeoVim,00h:09m:09s
+2025-05-06,vault - obsidian v1.8.10,00h:55m:21s
+2025-05-03,ghostty,00h:06m:26s
+2025-05-04,ugreen hitune max5c,00h:00m:00s
+2025-05-08,en.wiktionary.org wants to save,00h:00m:05s
+2025-05-09,Application Not Responding,00h:00m:00s
+2025-05-07,rofi - Applications:,00h:00m:07s
+2025-05-04,vault - obsidian v1.8.10,00h:16m:53s
+2025-05-04,spotify,00h:12m:13s
+2025-05-09,Devices & Locations,00h:00m:07s
+2025-05-10,rofi - Applications:,00h:00m:13s
+2025-05-06,rofi - applications:,00h:00m:59s
+2025-05-08,Discord,00h:03m:15s
+2025-05-09,Telegram (21061),00h:07m:44s
+2025-05-09,Ghostty,00h:04m:10s
+2025-05-09,New Tab - Brave,00h:42m:28s
+2025-05-09,REST API Documentation - Brave,00h:00m:07s
+2025-05-10,Ghostty,00h:01m:17s
+2025-05-06,brave,03h:11m:16s
+2025-05-07,NeoVim,00h:33m:07s
+2025-05-09,vesktop,00h:00m:04s
+2025-05-08,Ghostty,00h:05m:09s
+2025-05-09,Untitled - Brave,00h:00m:05s
+2025-05-09,Open File,00h:00m:04s
+2025-05-09,Telegram (21080),00h:05m:23s
+2025-05-08,New Tab - Brave,02h:09m:08s
+2025-05-08,Unlock Keyring,00h:00m:01s
+2025-05-09,Terminal,00h:00m:06s
+2025-05-04,www.pinterest.com wants to save,00h:00m:03s
+2025-05-06,ghostty,00h:30m:50s
+2025-05-06,https://start.duckduckgo.com - qutebrowser,00h:01m:44s
+2025-05-09,Console,00h:00m:30s
+2025-05-08,UGREEN HiTune Max5c,00h:00m:37s
+2025-05-04,white to move,00h:03m:52s
+2025-05-09,Telegram (17086),00h:06m:10s
+2025-05-10,Bluetooth Devices,00h:00m:05s
+2025-05-10,NeoVim,00h:12m:32s
+2025-05-09,GTK Application,00h:00m:01s
+2025-05-04,neovim,00h:33m:50s
+2025-05-10,New Tab - Brave,01h:13m:00s
+2025-05-07,Loading…,00h:00m:17s
+2025-05-07,Vault - Obsidian v1.8.10,00h:28m:43s
+2025-05-09,Neovide,00h:20m:14s
+2025-05-04,i.pinimg.com wants to save,00h:00m:07s
+2025-05-09,ticktick,00h:15m:46s
+2025-05-04,choose an image,00h:00m:03s
+2025-05-08,Application Not Responding,00h:00m:00s
+2025-05-08,Telegram (20053),00h:00m:06s
+2025-05-08,Media viewer,00h:00m:05s
+2025-05-08,Kitty,00h:00m:07s
+2025-05-04,github.com wants to open,00h:00m:08s
+2025-05-06,bluetooth devices,00h:01m:09s
+2025-05-04,bluetooth devices,00h:00m:07s
+2025-05-09,zedddie16 (Matthew) - Brave,00h:01m:56s
+2025-05-08,Telegram,00h:01m:47s
+2025-05-03,Telegram,00h:22m:46s
+2025-05-08,Bluetooth Devices,00h:00m:32s
+2025-05-09,audio.wordnik.com/28623.mp3?Expires=1746741093&Key-Pair-Id=APKAIHXX6B6C37D2VKVA&Signature=dO8PyDMHE9hrz0A-3V3qfGok1SC~IstRKmtB1jhADBUReUBGY~ABClyzAVOugAMcmwagGnEiP9iEAGjdWoxFOs4ptN6gmb057ONNLj7ag6kI~tRP-e~cf7uRYeEinsd3XTD-zJh4sljp7NWakN5RhnlUE4E6VynUBoId75ypscuNU~yFu4EgYFj2RvgcmcfYiM86oQkH6glFQ1bN3U9fGe1e~rUEbamz3V9UU5UgFNrM8LotTORTFWt5yQarzVtVQutHYrTwys7B4ssw2ARg1-lOE8uODdsvNJWYtw3wzjfsf3yG-yXg8j29Tduc90SXaRIdCUODGVCa3HoG3uB89A__ - Brave,00h:00m:12s
+2025-05-10,Telegram,00h:01m:39s
+2025-05-08,GTK Application,00h:00m:03s
+2025-05-09,Vault - Obsidian v1.8.10,00h:46m:52s
+2025-05-06,Telegram,01h:42m:34s
+2025-05-10,UGREEN HiTune Max5c,00h:00m:00s
+2025-05-09,Settings,00h:00m:01s
+2025-05-09,Save Image,00h:00m:07s
+2025-05-09,Telegram,00h:16m:14s
+2025-05-09,uxterm,00h:00m:13s
+2025-05-08,Open File,00h:00m:04s
+2025-05-03,zedddie16 (matthew) - brave,00h:06m:54s
+2025-05-03,unlock keyring,00h:00m:03s
+2025-05-04,mcontrolcenter,00h:00m:03s
+2025-05-04,unlock keyring,00h:00m:03s
+2025-05-09,Telegram (17117),00h:17m:19s
+2025-05-06,spotify,00h:24m:47s
+2025-05-09,Bluetooth Devices,00h:00m:04s
+2025-05-06,ugreen hitune max5c,00h:00m:12s
+2025-05-10,GTK Application,00h:00m:00s
+2025-05-08,i.pinimg.com wants to save,00h:00m:03s
+2025-05-06,media viewer,00h:00m:31s
