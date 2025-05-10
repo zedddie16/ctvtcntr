@@ -15,11 +15,10 @@ use std::time::{Duration, Instant};
 use tracing::info;
 
 #[derive(Debug, Serialize, Deserialize)]
-struct Usage {
-    date: String,
-    window_name: String,
-    // usage time stored as a formatted string, e.g. "01h:23m:45s"
-    total_time: String,
+pub struct Usage {
+    pub date: String,
+    pub window_name: String,
+    pub usage_time_secs: u32,
 }
 
 /// Converts a Duration into a formatted string "HHh:MMm:SSs".
