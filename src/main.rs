@@ -19,7 +19,7 @@ fn main() -> io::Result<()> {
         error!("Error waiting for Hyprland: {}", e);
         return Err(io::Error::new(io::ErrorKind::Other, e));
     }
-    let conn = Connection::open("activity_records.duckdb");
+    let conn = Connection::open("records.duckdb");
     // Load existing usage data (if any), then start monitoring.
     let mut usage_map = read_usage_data("app_usage.csv")?;
     info!("readed usage data");
