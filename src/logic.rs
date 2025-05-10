@@ -5,9 +5,11 @@ use hyprland::data::Client;
 use hyprland::shared::HyprDataActiveOptional;
 use regex::Regex;
 use serde::{Deserialize, Serialize};
-use std::collections::HashMap;
+use std::collections::BTreeMap;
 use std::fs::File;
 use std::io::{self, BufReader};
+use std::sync::atomic::{AtomicBool, Ordering};
+use std::sync::Arc;
 use std::thread::sleep;
 use std::time::{Duration, Instant};
 use tracing::info;
@@ -44,8 +46,10 @@ fn parse_duration_str(s: &str) -> Duration {
 
 /// Reads usage data from the CSV file into a HashMap keyed by (date, window_name).
 /// If the file does not exist, returns an empty map.
-pub fn read_usage_data(file_path: &str) -> io::Result<HashMap<(String, String), Duration>> {
-    let mut usage_map = HashMap::new();
+pub fn read_usage_data(file_path: &str) -> io::Result<BTreeMap<(String, String), Duration>> {
+    // TODO: may ve can be improved by deserializing only editable records from csv.
+    // then will need to append on cvs instead of complete rewriting
+    let mut usage_map = BTreeMap::new();
     if let Ok(file) = File::open(file_path) {
         let reader = BufReader::new(file);
         let mut csv_reader = ReaderBuilder::new().has_headers(true).from_reader(reader);
@@ -56,8 +60,8 @@ pub fn read_usage_data(file_path: &str) -> io::Result<HashMap<(String, String), 
             let dur = parse_duration_str(&record.total_time);
             usage_map
                 .entry(key)
-                .and_modify(|d| *d += dur)
-                .or_insert(dur);
+                .and_modify(|d| *d += dur) // if a record exists modify.
+                .or_insert(dur); // if it doesn't, create new record.
         }
     }
     Ok(usage_map)
@@ -67,7 +71,7 @@ pub fn read_usage_data(file_path: &str) -> io::Result<HashMap<(String, String), 
 /// Each record is stored as a row with date, window_name, and total_time (formatted).
 fn write_usage_data(
     file_path: &str,
-    usage_map: &HashMap<(String, String), Duration>,
+    usage_map: &BTreeMap<(String, String), Duration>,
 ) -> io::Result<()> {
     let file = File::create(file_path)?;
     let mut csv_writer = WriterBuilder::new().has_headers(true).from_writer(file);
@@ -85,7 +89,7 @@ fn write_usage_data(
 
 /// Updates the usage map by adding elapsed time for the given (date, window_name) key.
 fn update_usage(
-    usage_map: &mut HashMap<(String, String), Duration>,
+    usage_map: &mut BTreeMap<(String, String), Duration>,
     date: &str,
     window_name: &str,
     elapsed: Duration,
@@ -102,20 +106,31 @@ fn update_usage(
 /// - If a record for the current date and process already exists, increments its usage time.
 /// - Otherwise, creates a new record for today.
 pub fn monitor_active_window(
-    usage_map: &mut HashMap<(String, String), Duration>,
+    usage_map: &mut BTreeMap<(String, String), Duration>,
 ) -> io::Result<()> {
+    let running = Arc::new(AtomicBool::new(true)); // creating app's state
+    let r = running.clone();
+
+    ctrlc::set_handler(move || {
+        r.store(false, Ordering::SeqCst);
+    })
+    .expect("Error setting Ctrl+C handler");
+
     let mut last_key: Option<(String, String)> = None; // (date, process name)
     let mut last_switch_time = Instant::now();
 
     let rexex_str = Regex::new(r"^(.+?)\s*–\s*").unwrap(); // trims active title of app
 
     info!("starting active window monitor loop");
-    loop {
+    while running.load(Ordering::SeqCst) {
         let current_date = Local::now().format("%Y-%m-%d").to_string();
         if let Ok(Some(active_window)) = Client::get_active() {
             let raw_title = active_window.initial_title.clone();
             let mut process_name = extract_process_name(&raw_title);
-
+            // if active_window.class == "obsidian" {
+            //    process_name = *active_window.title.
+            //    try_4 - Vault - Obsidian v1.8.10:
+            // }
             if active_window.class == "com.mitchellh.ghostty" {
                 if active_window.title.contains("nvim") {
                     process_name = "NeoVim".to_string();
@@ -144,7 +159,7 @@ pub fn monitor_active_window(
                         }
                     }
                 } else {
-                    sleep(Duration::from_millis(50));
+                    sleep(Duration::from_millis(500));
                     continue;
                 }
             }
@@ -162,6 +177,8 @@ pub fn monitor_active_window(
 
         // Write updated usage data to CSV.
         write_usage_data("app_usage.csv", usage_map)?;
-        sleep(Duration::from_millis(50));
+        sleep(Duration::from_millis(500));
     }
+    info!("Shutting down");
+    Ok(())
 }
