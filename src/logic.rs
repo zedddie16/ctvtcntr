@@ -21,27 +21,6 @@ pub struct Usage {
     pub usage_time_secs: u32,
 }
 
-/// Reads usage data from the CSV file into a HashMap keyed by (date, window_name).
-/// If the file does not exist, returns an empty map.
-pub fn read_usage_data(file_path: &str) -> io::Result<BTreeMap<(String, String), Duration>> {
-    let mut usage_map = BTreeMap::new();
-    if let Ok(file) = File::open(file_path) {
-        let reader = BufReader::new(file);
-        let mut csv_reader = ReaderBuilder::new().has_headers(true).from_reader(reader);
-        for result in csv_reader.deserialize() {
-            let record: Usage = result?;
-            // Normalize the process name (to merge similar entries).
-            let key = (record.date, extract_process_name(&record.window_name));
-            let dur = parse_duration_str(&record.usage_time_secs);
-            usage_map
-                .entry(key)
-                .and_modify(|d| *d += dur) // if a record exists modify.
-                .or_insert(dur); // if it doesn't, create new record.
-        }
-    }
-    Ok(usage_map)
-}
-
 /// Writes the current usage data to the CSV file.
 /// Each record is stored as a row with date, window_name, and total_time (formatted).
 fn write_usage_data(
