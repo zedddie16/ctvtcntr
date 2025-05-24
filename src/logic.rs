@@ -21,15 +21,6 @@ pub struct Usage {
     pub usage_time_secs: u32,
 }
 
-/// Converts a Duration into a formatted string "HHh:MMm:SSs".
-fn format_duration(duration: Duration) -> String {
-    let secs = duration.as_secs();
-    let hours = secs / 3600;
-    let minutes = (secs % 3600) / 60;
-    let seconds = secs % 60;
-    format!("{:02}h:{:02}m:{:02}s", hours, minutes, seconds)
-}
-
 /// Parses a duration string in the format "HHh:MMm:SSs" back into a Duration.
 // TODO: rewrite conversion and deserialization
 fn parse_duration_str(s: &str) -> Duration {
