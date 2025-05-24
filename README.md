@@ -1,13 +1,25 @@
-### ctvtcntr 
+# ctvtcntr 
 ctvtcntr (activity counter) is a simple activity monitoring app for hyprland
 just a silly project of mine to know how much time I spend by playing games, searching web, coding and etc.
 
-#### Todos
+### Todos
 1. [x] - basic activity counter application
 2. [ ] - duckdb integration 
 3. [ ] - telegram bot for data visualising
 
-#### How to use
+## How to use
+### cargo install
+```
+cargo install ctvtcntr (not yet available)
+```
+### include in hyprland.conf
+to set on a system start:
+```
+exec-once = ctvtcntr
+```
+records are stored in `~/.local/ctvtcntr/app_usage.csv`
+### build from source
+
 you can compile binary, and add ctvtcntr as a service to be loaded every time system boot.
 Here is how you do it:
 Compile binary
