@@ -173,8 +173,11 @@ pub fn monitor_active_window(
                     let elapsed = last_switch_time.elapsed();
                     update_usage(usage_map, &prev_key.0, &prev_key.1, elapsed);
                     // Write updated usage data to CSV.
-                    write_usage_data(usage_map, csv_path)?;
-                    info!("Written to {csv_path:?}");
+                    if let Err(e) = write_usage_data(usage_map, csv_path) {
+                        tracing::error!("Failed to write usage data on app switch: {}", e);
+                    } else {
+                        info!("Written to {csv_path:?}");
+                    }
                 }
                 last_key = Some(current_key.clone());
                 last_switch_time = Instant::now();
