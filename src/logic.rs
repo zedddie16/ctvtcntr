@@ -21,26 +21,6 @@ pub struct Usage {
     pub usage_time_secs: u32,
 }
 
-/// Writes the current usage data to the CSV file.
-/// Each record is stored as a row with date, window_name, and total_time (formatted).
-fn write_usage_data(
-    file_path: &str,
-    usage_map: &BTreeMap<(String, String), Duration>,
-) -> io::Result<()> {
-    let file = File::create(file_path)?;
-    let mut csv_writer = WriterBuilder::new().has_headers(true).from_writer(file);
-    for ((date, window_name), duration) in usage_map {
-        let record = Usage {
-            date: date.clone(),
-            window_name: window_name.clone(),
-            usage_time_secs: format_duration(*duration),
-        };
-        csv_writer.serialize(record)?;
-    }
-    csv_writer.flush()?;
-    Ok(())
-}
-
 /// Updates the usage map by adding elapsed time for the given (date, window_name) key.
 fn update_usage(
     usage_map: &mut BTreeMap<(String, String), Duration>,
