@@ -1,5 +1,4 @@
 /target
 records.db
+records.db.wal
 .idea
-app_usage.csv
-app_usage.csv.wal
