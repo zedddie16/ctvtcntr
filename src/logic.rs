@@ -8,6 +8,7 @@ use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 use std::fs::File;
 use std::io::{self, BufReader};
+use std::path::PathBuf;
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::Arc;
 use std::thread::sleep;
@@ -46,7 +47,7 @@ fn parse_duration_str(s: &str) -> Duration {
 
 /// Reads usage data from the CSV file into a HashMap keyed by (date, window_name).
 /// If the file does not exist, returns an empty map.
-pub fn read_usage_data(file_path: &str) -> io::Result<BTreeMap<(String, String), Duration>> {
+pub fn read_usage_data(file_path: &PathBuf) -> io::Result<BTreeMap<(String, String), Duration>> {
     let mut usage_map = BTreeMap::new();
     if let Ok(file) = File::open(file_path) {
         let reader = BufReader::new(file);
@@ -62,6 +63,7 @@ pub fn read_usage_data(file_path: &str) -> io::Result<BTreeMap<(String, String),
                 .or_insert(dur); // if it doesn't, create new record.
         }
     }
+    info!("readed usage data on: {file_path:?}");
     Ok(usage_map)
 }
 
