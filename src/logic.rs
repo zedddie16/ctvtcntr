@@ -39,6 +39,7 @@ fn update_usage(
 /// - Uses chrono to get the current date.
 /// - If a record for the current date and process already exists, increments its usage time.
 /// - Otherwise, creates a new record for today.
+/// TODO: rewrite monitor active window logic to use duckdb
 pub fn monitor_active_window(
     usage_map: &mut BTreeMap<(String, String), Duration>,
 ) -> io::Result<()> {

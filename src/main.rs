@@ -30,7 +30,5 @@ fn main() {
     log_activity(&conn, "different_app", 42).unwrap();
 
     print_all_records(&conn).unwrap();
-    // let mut usage_map = read_usage_data("app_usage.csv")?;
-    // info!("readed usage data");
     // monitor_active_window(&mut usage_map)
 }
