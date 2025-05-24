@@ -2,7 +2,7 @@ use duckdb::Connection;
 use tracing::{error, info};
 
 mod db;
-use db::ensure_table_exists;
+use db::{ensure_table_exists, print_all_records};
 mod logic;
 use logic::monitor_active_window;
 mod startup;
@@ -21,5 +21,6 @@ fn main() {
     info!("connected to duckdb");
     ensure_table_exists(&conn).expect("ensuring failed");
     info!("Table 'activity_log' ensured.");
+    print_all_records(&conn);
     monitor_active_window(conn).expect("failed to start active monitor window loop");
 }
