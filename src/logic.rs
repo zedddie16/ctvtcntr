@@ -120,7 +120,7 @@ pub fn monitor_active_window(
     let mut last_key: Option<(String, String)> = None; // (date, process name)
     let mut last_switch_time = Instant::now();
 
-    let rexex_str = Regex::new(r"^(.+?)\s*–\s*").unwrap(); // trims active title of app
+    let rexex_str = Regex::new(r"^(.+?)\s*–\s*").expect("Failed to compile Regex String"); // trims active title of app
 
     info!("starting active window monitor loop");
     while running.load(Ordering::SeqCst) {
@@ -153,8 +153,11 @@ pub fn monitor_active_window(
                     process_name = active_window.class;
                     if process_name == *"jetbrains-rustrover" {
                         if let Some(captures) = rexex_str.captures(active_window.title.as_str()) {
-                            let extracted = captures.get(1).unwrap().as_str();
-                            process_name = format!("RustRover -> {}", extracted);
+                            if let Some(extracted_match) = captures.get(1) {
+                                process_name = format!("RustRover -> {}", extracted_match.as_str());
+                            } else {
+                                process_name = "RustRover".to_string();
+                            }
                         } else {
                             process_name = "RustRover".to_string();
                         }
