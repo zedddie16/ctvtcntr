@@ -1,3 +1,4 @@
+use crate::db::{self, log_activity};
 use crate::match_title::extract_process_name;
 use chrono::Local;
 use csv::{ReaderBuilder, WriterBuilder};
@@ -18,7 +19,7 @@ use tracing::info;
 pub struct Usage {
     pub date: String,
     pub window_name: String,
-    pub usage_time_secs: u32,
+    pub usage_time_secs: u64,
 }
 
 /// Updates the usage map by adding elapsed time for the given (date, window_name) key.
@@ -40,9 +41,7 @@ fn update_usage(
 /// - If a record for the current date and process already exists, increments its usage time.
 /// - Otherwise, creates a new record for today.
 /// TODO: rewrite monitor active window logic to use duckdb
-pub fn monitor_active_window(
-    usage_map: &mut BTreeMap<(String, String), Duration>,
-) -> io::Result<()> {
+pub fn monitor_active_window(conn: duckdb::Connection) -> io::Result<()> {
     let running = Arc::new(AtomicBool::new(true)); // creating app's state
     let r = running.clone();
 
@@ -58,6 +57,7 @@ pub fn monitor_active_window(
 
     info!("starting active window monitor loop");
     while running.load(Ordering::SeqCst) {
+        // loop start
         let current_date = Local::now().format("%Y-%m-%d").to_string();
         if let Ok(Some(active_window)) = Client::get_active() {
             let raw_title = active_window.initial_title.clone();
@@ -76,7 +76,7 @@ pub fn monitor_active_window(
             // Handle Kitty windows running nvim
             if active_window.class == "kitty" {
                 if active_window.title.contains("nvim") {
-                    process_name = "NeoVim".to_string();
+                    process_name = "Vim".to_string();
                 } else {
                     process_name = "Kitty".to_string();
                 }
@@ -102,7 +102,7 @@ pub fn monitor_active_window(
             if last_key.as_ref() != Some(&current_key) {
                 if let Some(ref prev_key) = last_key {
                     let elapsed = last_switch_time.elapsed();
-                    update_usage(usage_map, &prev_key.0, &prev_key.1, elapsed);
+                    log_activity(&conn, &prev_key.1, elapsed.as_secs());
                 }
                 last_key = Some(current_key.clone());
                 last_switch_time = Instant::now();

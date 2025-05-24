@@ -20,7 +20,7 @@ pub fn ensure_table_exists(conn: &Connection) -> Result<()> {
 /// Log application activity
 /// If a record for the app_name and today's date exists, its usage_time_seconds is incremented
 /// Otherwise, a new record is inserted
-pub fn log_activity(conn: &Connection, window_name: &str, usage_increment_secs: u32) -> Result<()> {
+pub fn log_activity(conn: &Connection, window_name: &str, usage_increment_secs: u64) -> Result<()> {
     let today_naive: NaiveDate = Utc::now().date_naive();
 
     let sql = "
