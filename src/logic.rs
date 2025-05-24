@@ -21,61 +21,46 @@ pub struct Usage {
     pub usage_time_secs: u32,
 }
 
-/// Parses a duration string in the format "HHh:MMm:SSs" back into a Duration.
-// TODO: rewrite conversion and deserialization
-fn parse_duration_str(s: &str) -> Duration {
-    let parts: Vec<&str> = s.split(':').collect();
-    if parts.len() != 3 {
-        return Duration::ZERO;
-    }
-    let hours = parts[0].trim_end_matches('h').parse::<u64>().unwrap_or(0);
-    let minutes = parts[1].trim_end_matches('m').parse::<u64>().unwrap_or(0);
-    let seconds = parts[2].trim_end_matches('s').parse::<u64>().unwrap_or(0);
-    Duration::from_secs(hours * 3600 + minutes * 60 + seconds)
-}
-
 /// Reads usage data from the CSV file into a HashMap keyed by (date, window_name).
 /// If the file does not exist, returns an empty map.
-// pub fn read_usage_data(file_path: &str) -> io::Result<BTreeMap<(String, String), Duration>> {
-//     // TODO: may ve can be improved by deserializing only editable records from csv.
-//     // then will need to append on cvs instead of complete rewriting
-//     let mut usage_map = BTreeMap::new();
-//     if let Ok(file) = File::open(file_path) {
-//         let reader = BufReader::new(file);
-//         let mut csv_reader = ReaderBuilder::new().has_headers(true).from_reader(reader);
-//         for result in csv_reader.deserialize() {
-//             let record: Usage = result?;
-//             // Normalize the process name (to merge similar entries).
-//             let key = (record.date, extract_process_name(&record.window_name));
-//             let dur = parse_duration_str(&record.usage_time_secs);
-//             usage_map
-//                 .entry(key)
-//                 .and_modify(|d| *d += dur) // if a record exists modify.
-//                 .or_insert(dur); // if it doesn't, create new record.
-//         }
-//     }
-//     Ok(usage_map)
-// }
+pub fn read_usage_data(file_path: &str) -> io::Result<BTreeMap<(String, String), Duration>> {
+    let mut usage_map = BTreeMap::new();
+    if let Ok(file) = File::open(file_path) {
+        let reader = BufReader::new(file);
+        let mut csv_reader = ReaderBuilder::new().has_headers(true).from_reader(reader);
+        for result in csv_reader.deserialize() {
+            let record: Usage = result?;
+            // Normalize the process name (to merge similar entries).
+            let key = (record.date, extract_process_name(&record.window_name));
+            let dur = parse_duration_str(&record.usage_time_secs);
+            usage_map
+                .entry(key)
+                .and_modify(|d| *d += dur) // if a record exists modify.
+                .or_insert(dur); // if it doesn't, create new record.
+        }
+    }
+    Ok(usage_map)
+}
 
 /// Writes the current usage data to the CSV file.
 /// Each record is stored as a row with date, window_name, and total_time (formatted).
-// fn write_usage_data(
-//     file_path: &str,
-//     usage_map: &BTreeMap<(String, String), Duration>,
-// ) -> io::Result<()> {
-//     let file = File::create(file_path)?;
-//     let mut csv_writer = WriterBuilder::new().has_headers(true).from_writer(file);
-//     for ((date, window_name), duration) in usage_map {
-//         let record = Usage {
-//             date: date.clone(),
-//             window_name: window_name.clone(),
-//             usage_time_secs: format_duration(*duration),
-//         };
-//         csv_writer.serialize(record)?;
-//     }
-//     csv_writer.flush()?;
-//     Ok(())
-// }
+fn write_usage_data(
+    file_path: &str,
+    usage_map: &BTreeMap<(String, String), Duration>,
+) -> io::Result<()> {
+    let file = File::create(file_path)?;
+    let mut csv_writer = WriterBuilder::new().has_headers(true).from_writer(file);
+    for ((date, window_name), duration) in usage_map {
+        let record = Usage {
+            date: date.clone(),
+            window_name: window_name.clone(),
+            usage_time_secs: format_duration(*duration),
+        };
+        csv_writer.serialize(record)?;
+    }
+    csv_writer.flush()?;
+    Ok(())
+}
 
 /// Updates the usage map by adding elapsed time for the given (date, window_name) key.
 fn update_usage(
