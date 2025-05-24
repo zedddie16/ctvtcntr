@@ -8,6 +8,7 @@ use startup::wait_for_hyprland_socket;
 mod match_title;
 
 use std::env;
+use std::path::PathBuf;
 
 fn main() -> io::Result<()> {
     tracing::subscriber::set_global_default(tracing_subscriber::FmtSubscriber::new())
@@ -22,10 +23,10 @@ fn main() -> io::Result<()> {
 
     // Load data path exposed by build script
     let data_dir_str = env!("CTVTCNTR_DATA_DIR");
-    let app_usage_dir = format!("{}/app_usage.csv", data_dir_str);
+    let data_dir = PathBuf::from(data_dir_str);
+    let app_usage_file_path = data_dir.join("app_usage.csv");
 
     // Load existing usage data (if any), then start monitoring.
-    let mut usage_map = read_usage_data(&app_usage_dir)?;
-    info!("readed usage data");
+    let mut usage_map = read_usage_data(&app_usage_file_path)?;
     monitor_active_window(&mut usage_map)
 }
