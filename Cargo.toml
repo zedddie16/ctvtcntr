@@ -3,8 +3,6 @@ name = "ctvtcntr"
 version = "0.1.0"
 edition = "2021"
 
-
-
 [dependencies]
 thiserror = "2.0.9"
 ctrlc = "3.4.6"
@@ -16,30 +14,3 @@ tracing = "0.1.41"
 regex = "1.11.1"
 tracing-subscriber = "0.3.19"
 duckdb = { version = "1.2.2", features = ["chrono", "bundled"] }
-
-[patch.crates-io]
-# chrono = { version = "=0.4.39" } 
-# arrow-arith = { version = "=53.4.1" } 
-# # arrow = { version = "=53.4.1" }
-# arrow-array = { version = "=53.4.1" }
-# arrow-buffer = { version = "=53.4.1" }
-# arrow-csv = { version = "=53.4.1" }
-# arrow-data = { version = "=53.4.1" }
-# arrow-opt = { version = "=53.4.1" }
-# arrow-ord = { version = "=53.4.1" }
-# arrow-row = { version = "=53.4.1" }
-# arrow-schema = { version = "=53.4.1" }
-# arrow-temporal = { version = "=53.4.1" }
-# [patch.crates-io]
-# chrono = "=0.4.39"
-# # # arrow = "=53.4.1"
-# # # arrow-array = "=53.4.1"
-# arrow-arith = "=53.4.1"
-# # # arrow-buffer = "=53.4.1"
-# # # arrow-csv = "=53.4.1"
-# # arrow-data = "=53.4.1"
-# # arrow-opt = "=53.4.1"
-# # arrow-ord = "=53.4.1"
-# # arrow-row = "=53.4.1"
-# # arrow-schema = "=53.4.1"
-# # arrow-temporal = "=53.4.1"
