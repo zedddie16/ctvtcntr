@@ -1,5 +1,6 @@
 use chrono::{Datelike, NaiveDate, Utc};
 use duckdb::{params, Connection, Result, ToSql};
+use tracing::info;
 
 use crate::logic::Usage;
 
@@ -14,6 +15,7 @@ pub fn ensure_table_exists(conn: &Connection) -> Result<()> {
         )",
         [],
     )?;
+    info!("table ensured");
     Ok(())
 }
 
@@ -32,8 +34,8 @@ pub fn log_activity(conn: &Connection, window_name: &str, usage_increment_secs: 
 
     conn.execute(sql, params![today_naive, window_name, usage_increment_secs])?;
 
-    println!(
-        "Logged/Updated: Date: {}, App: {}, Usage Increment: {}s",
+    info!(
+        "Upsert: Date: {}, App: {}, Usage Increment: {}s",
         today_naive, window_name, usage_increment_secs
     );
     Ok(())
