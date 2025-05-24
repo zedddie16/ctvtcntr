@@ -3,14 +3,14 @@ use std::io;
 use tracing::{error, info};
 
 mod db;
-use db::{self, ensure_table_exists};
+use db::{ensure_table_exists, log_activity, print_all_records};
 mod logic;
-use logic::{monitor_active_window, read_usage_data};
+use logic::monitor_active_window;
 mod startup;
 use startup::wait_for_hyprland_socket;
 mod match_title;
 
-fn main() -> io::Result<()> {
+fn main() {
     tracing::subscriber::set_global_default(tracing_subscriber::FmtSubscriber::new())
         .expect("setting default subscriber failed");
 
@@ -18,14 +18,19 @@ fn main() -> io::Result<()> {
     if let Err(e) = wait_for_hyprland_socket(60) {
         // Wait for up to 60 seconds
         error!("Error waiting for Hyprland: {}", e);
-        return Err(io::Error::new(io::ErrorKind::Other, e));
+        // return Err(io::Error::new(io::ErrorKind::Other, e));
     }
-    let conn = Connection::open("records.db")?;
+    let conn = Connection::open("records.db").unwrap();
     info!("connected to duckdb");
     // Load existing usage data (if any), then start monitoring.
-    ensure_table_exists(conn);
+    ensure_table_exists(&conn);
     info!("Table 'activity_log' ensured.");
-    let mut usage_map = read_usage_data("app_usage.csv")?;
-    info!("readed usage data");
-    monitor_active_window(&mut usage_map)
+
+    log_activity(&conn, "app", 42).unwrap();
+    log_activity(&conn, "different_app", 42).unwrap();
+
+    print_all_records(&conn).unwrap();
+    // let mut usage_map = read_usage_data("app_usage.csv")?;
+    // info!("readed usage data");
+    // monitor_active_window(&mut usage_map)
 }

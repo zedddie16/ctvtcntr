@@ -8,9 +8,9 @@ pub fn ensure_table_exists(conn: &Connection) -> Result<()> {
     conn.execute(
         "CREATE TABLE IF NOT EXISTS activity_log (
             date DATE,
-            app_name VARCHAR,
-            usage_time_seconds INTEGER,
-            PRIMARY KEY (date, app_name)
+            window_name VARCHAR,
+            usage_time_secs INTEGER,
+            PRIMARY KEY (date, window_name)
         )",
         [],
     )?;
@@ -20,21 +20,28 @@ pub fn ensure_table_exists(conn: &Connection) -> Result<()> {
 /// Log application activity
 /// If a record for the app_name and today's date exists, its usage_time_seconds is incremented
 /// Otherwise, a new record is inserted
-pub fn log_activity(conn: &Connection, app_name: &str, usage_increment_seconds: i32) -> Result<()> {
+pub fn log_activity(
+    conn: &Connection,
+    window_name: &str,
+    usage_increment_seconds: i32,
+) -> Result<()> {
     let today_naive: NaiveDate = Utc::now().date_naive();
 
     let sql = "
-        INSERT INTO activity_log (date, app_name, usage_time_seconds)
+        INSERT INTO activity_log (date, window_name, usage_time_secs)
         VALUES (?, ?, ?)
-        ON CONFLICT (date, app_name) DO UPDATE SET
-        usage_time_seconds = activity_log.usage_time_seconds + excluded.usage_time_seconds;
+        ON CONFLICT (date, window_name) DO UPDATE SET
+        usage_time_secs = activity_log.usage_time_secs + excluded.usage_time_secs;
     ";
 
-    conn.execute(sql, params![today_naive, app_name, usage_increment_seconds])?;
+    conn.execute(
+        sql,
+        params![today_naive, window_name, usage_increment_seconds],
+    )?;
 
     println!(
         "Logged/Updated: Date: {}, App: {}, Usage Increment: {}s",
-        today_naive, app_name, usage_increment_seconds
+        today_naive, window_name, usage_increment_seconds
     );
     Ok(())
 }
@@ -42,7 +49,9 @@ pub fn log_activity(conn: &Connection, app_name: &str, usage_increment_seconds: 
 /// Query and display all records (testing)
 pub fn print_all_records(conn: &Connection) -> Result<()> {
     println!("\n--- All Records ---");
-    let mut stmt = conn.prepare("SELECT event_date, app_name, usage_time_seconds FROM activity_log ORDER BY event_date, app_name")?;
+    let mut stmt = conn.prepare(
+        "SELECT date, window_name, usage_time_secs FROM activity_log ORDER BY date, window_name",
+    )?;
     let records_iter = stmt.query_map([], |row| {
         Ok(Usage {
             date: row.get(0)?,
@@ -56,7 +65,7 @@ pub fn print_all_records(conn: &Connection) -> Result<()> {
             Ok(record) => {
                 println!(
                     "Date: {}, App: {}, Total Usage: {}s",
-                    record.event_date, record.app_name, record.usage_time_seconds
+                    record.date, record.window_name, record.usage_time_secs
                 );
             }
             Err(e) => eprintln!("Error reading row: {}", e),
@@ -72,9 +81,8 @@ pub fn get_usage_for_app_on_date(
     app_name: &str,
     date: NaiveDate,
 ) -> Result<Option<i32>> {
-    let mut stmt = conn.prepare(
-        "SELECT usage_time_seconds FROM activity_log WHERE app_name = ? AND event_date = ?",
-    )?;
+    let mut stmt = conn
+        .prepare("SELECT usage_time_secs FROM activity_log WHERE window_name = ? AND date = ?")?;
     let mut rows = stmt.query(params![app_name, date])?;
 
     if let Some(row) = rows.next()? {
