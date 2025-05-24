@@ -1,5 +1,5 @@
 use std::io;
-use tracing::{error, info};
+use tracing::error;
 
 mod logic;
 use logic::{monitor_active_window, read_usage_data};
