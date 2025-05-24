@@ -181,6 +181,15 @@ pub fn monitor_active_window(
 
         sleep(Duration::from_millis(500));
     }
-    info!("Shutting down");
+    if let Some(ref final_key) = last_key {
+        let elapsed_final = last_switch_time.elapsed();
+        update_usage(usage_map, &final_key.0, &final_key.1, elapsed_final);
+        if let Err(e) = write_usage_data(usage_map, csv_path) {
+            tracing::error!("Failed to write final usage data on shutdown: {}", e);
+        } else {
+            info!("Final usage data successfully written to {:?}", csv_path);
+        }
+    }
+    info!("Shutting down application");
     Ok(())
 }
