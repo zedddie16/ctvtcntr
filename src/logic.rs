@@ -169,6 +169,9 @@ pub fn monitor_active_window(
                 if let Some(ref prev_key) = last_key {
                     let elapsed = last_switch_time.elapsed();
                     update_usage(usage_map, &prev_key.0, &prev_key.1, elapsed);
+                    // Write updated usage data to CSV.
+                    write_usage_data(usage_map, csv_path)?;
+                    info!("Written to {csv_path:?}");
                 }
                 last_key = Some(current_key.clone());
                 last_switch_time = Instant::now();
@@ -176,9 +179,6 @@ pub fn monitor_active_window(
             }
         }
 
-        // Write updated usage data to CSV.
-        write_usage_data(usage_map, csv_path)?;
-        info!("Written to {csv_path:?}");
         sleep(Duration::from_millis(500));
     }
     info!("Shutting down");
