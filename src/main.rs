@@ -28,5 +28,5 @@ fn main() -> io::Result<()> {
 
     // Load existing usage data (if any), then start monitoring.
     let mut usage_map = read_usage_data(&app_usage_file_path)?;
-    monitor_active_window(&mut usage_map)
+    monitor_active_window(&mut usage_map, &app_usage_file_path)
 }

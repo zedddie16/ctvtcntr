@@ -70,10 +70,10 @@ pub fn read_usage_data(file_path: &PathBuf) -> io::Result<BTreeMap<(String, Stri
 /// Writes the current usage data to the CSV file.
 /// Each record is stored as a row with date, window_name, and total_time (formatted).
 fn write_usage_data(
-    file_path: &str,
     usage_map: &BTreeMap<(String, String), Duration>,
+    csv_path: &PathBuf,
 ) -> io::Result<()> {
-    let file = File::create(file_path)?;
+    let file = File::create(csv_path)?;
     let mut csv_writer = WriterBuilder::new().has_headers(true).from_writer(file);
     for ((date, window_name), duration) in usage_map {
         let record = Usage {
@@ -107,6 +107,7 @@ fn update_usage(
 /// - Otherwise, creates a new record for today.
 pub fn monitor_active_window(
     usage_map: &mut BTreeMap<(String, String), Duration>,
+    csv_path: &PathBuf,
 ) -> io::Result<()> {
     let running = Arc::new(AtomicBool::new(true)); // creating app's state
     let r = running.clone();
@@ -176,7 +177,8 @@ pub fn monitor_active_window(
         }
 
         // Write updated usage data to CSV.
-        write_usage_data("app_usage.csv", usage_map)?;
+        write_usage_data(usage_map, csv_path)?;
+        info!("Written to {csv_path:?}");
         sleep(Duration::from_millis(500));
     }
     info!("Shutting down");
