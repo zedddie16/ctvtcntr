@@ -13,7 +13,7 @@ use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::Arc;
 use std::thread::sleep;
 use std::time::{Duration, Instant};
-use tracing::info;
+use tracing::{debug, info};
 
 #[derive(Debug, Serialize, Deserialize)]
 struct Usage {
@@ -176,7 +176,7 @@ pub fn monitor_active_window(
                     if let Err(e) = write_usage_data(usage_map, csv_path) {
                         tracing::error!("Failed to write usage data on app switch: {}", e);
                     } else {
-                        info!("Written to {csv_path:?}");
+                        debug!("Written to {csv_path:?}");
                     }
                 }
                 last_key = Some(current_key.clone());
