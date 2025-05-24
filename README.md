@@ -8,55 +8,54 @@ just a silly project of mine to know how much time I spend by playing games, sea
 3. [ ] - telegram bot for data visualising
 
 ## How to use
-### cargo install
+### Install via Cargo (Recommended)
+Once published to `crates.io` (planned for a future release), you'll be able to install it directly:
+
+```sh
+cargo install ctvtcntr
 ```
-cargo install ctvtcntr (not yet available)
+For now, you can install it from source:
+
 ```
-### include in hyprland.conf
-to set on a system start:
+# Clone the repository
+git clone https://github.com/zedddie16/ctvtcntr
+cd ctvtcntr
+cargo install --path .
 ```
+
+### Auto-start with Hyprland (exec-once)
+This is the simplest way to ensure ctvtcntr starts with your Hyprland session. 
+Add the following line to your ~/.config/hypr/hyprland.conf:
+```
+# Auto-start ctvtcntr for activity logging
 exec-once = ctvtcntr
 ```
-records are stored in `~/.local/ctvtcntr/app_usage.csv`
-### build from source
+records are stored in `~/.local/share/ctvtcntr/app_usage.csv`
 
-you can compile binary, and add ctvtcntr as a service to be loaded every hyprland/system start.
-Here is how you do it:
-```
-git clone https://github.com/zedddie16/ctvtcntr
-```
-Compile binary
-```sh
-cargo build --release
-```
-test it, and if needed, set on startup in hyprland.conf:
-```
-exec-once = <path_to_clone>/target/release/ctvtcntr
-```
-
-#### systemd initialization
-If systemd is preffered, create ```~/.config/systemd/user/ctvtcntr.service``` 
-
+#### systemd initialization (restart-on-fail)
+If systemd is preffered(e.g for restart on fail), create the service file at `~/.config/systemd/user/ctvtcntr.service`:
 ```
 [Unit]
-Description=ctvtcntr is a simple hyprland activity counter
+Description=ctvtcntr is a simple Hyprland activity counter
 After=graphical-session.target
 
 [Service]
+; Assumes ctvtcntr is in your PATH
 ExecStart=ctvtcntr
 Restart=on-failure
 
 [Install]
 WantedBy=graphical-session.target
 ```
-then just
+Enable and start the service:
 
 ```sh
+systemctl --user daemon-reload
 systemctl --user enable ctvtcntr.service
 systemctl --user start ctvtcntr.service
 ```
 
-to check status do not forget add --user flag, otherwise it wont show.
+Check the service status:
 ```sh
 systemctl status --user ctvtcntr
 ```
