@@ -13,6 +13,7 @@ use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::Arc;
 use std::thread::sleep;
 use std::time::{Duration, Instant};
+use tracing::error;
 use tracing::info;
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -62,10 +63,7 @@ pub fn monitor_active_window(conn: duckdb::Connection) -> io::Result<()> {
         if let Ok(Some(active_window)) = Client::get_active() {
             let raw_title = active_window.initial_title.clone();
             let mut process_name = extract_process_name(&raw_title);
-            // if active_window.class == "obsidian" {
-            //    process_name = *active_window.title.
-            //    try_4 - Vault - Obsidian v1.8.10:
-            // }
+            // TODO: move these checks to match_title module
             if active_window.class == "com.mitchellh.ghostty" {
                 if active_window.title.contains("nvim") {
                     process_name = "NeoVim".to_string();
@@ -74,6 +72,7 @@ pub fn monitor_active_window(conn: duckdb::Connection) -> io::Result<()> {
                 }
             }
             // Handle Kitty windows running nvim
+            // TODO: move these checks to match_title module
             if active_window.class == "kitty" {
                 if active_window.title.contains("nvim") {
                     process_name = "Vim".to_string();
@@ -82,6 +81,7 @@ pub fn monitor_active_window(conn: duckdb::Connection) -> io::Result<()> {
                 }
             }
 
+            // TODO: move these checks to match_title module
             if process_name.is_empty() {
                 if !active_window.class.is_empty() {
                     process_name = active_window.class;
@@ -114,6 +114,15 @@ pub fn monitor_active_window(conn: duckdb::Connection) -> io::Result<()> {
         // write_usage_data("app_usage.csv", usage_map)?;
         sleep(Duration::from_millis(500));
     }
+    // save last record before shutting down
+    if let Some(ref final_key) = last_key {
+        let elapsed_final = last_switch_time.elapsed();
+        if let Err(e) = log_activity(&conn, &final_key.1, elapsed_final.as_secs()) {
+            error!("Failed to upsert final usage data on shutdown")
+        }
+    } else {
+        info!("Final usage data successfully written.");
+    };
     info!("Shutting down");
     Ok(())
 }
