@@ -3,15 +3,15 @@ use tracing::{error, info};
 
 mod db;
 use db::{ensure_table_exists, print_all_records};
+
 mod logic;
+mod match_title;
 use logic::monitor_active_window;
+
 mod startup;
 use startup::wait_for_hyprland_socket;
-mod match_title;
 
 mod utils;
-use std::env;
-use std::path::PathBuf;
 use utils::get_app_data_dir;
 
 fn main() {
@@ -36,6 +36,6 @@ fn main() {
     info!("connected to duckdb on {path_to_database_file:?}");
     ensure_table_exists(&conn).expect("ensuring failed");
     info!("Table 'activity_log' ensured.");
-    print_all_records(&conn);
+    print_all_records(&conn).expect("Failed to print_all_records");
     monitor_active_window(conn).expect("failed to start active monitor window loop");
 }
