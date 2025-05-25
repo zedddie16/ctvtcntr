@@ -1,47 +1,69 @@
-### ctvtcntr 
-ctvtcntr is activity monitoring app for hyprland
+# ctvtcntr 
+ctvtcntr (activity counter) is a simple activity monitoring app for hyprland
 just a silly project of mine to know how much time I spend by playing games, searching web, coding and etc.
-mayyyy be I will do further stuff and implement something like telegram bot to give me my pc usement data/////
 
-#### How to use
-you can compile binary, and add ctvtcntr as a service to be loaded every time system boot.
-Here is how you do it:
-Compile binary
+### Todos
+1. [x] - basic activity counter application
+2. [x] - duckdb integration 
+3. [ ] - telegram bot for data visualising
+
+## How to use
+### Install via Cargo (Recommended)
+Once published to `crates.io` (planned for a future release), you'll be able to install it directly:
+
 ```sh
-cargo build --release
+cargo install ctvtcntr
 ```
-then create ```~/.config/systemd/user/ctvtcntr.service``` with same arguments as in repo, but
-modify the path to match actual compiled binary path and app_activity.csv file.
+For now, you can install it from source:
 
+```
+# Clone the repository
+git clone https://github.com/zedddie16/ctvtcntr
+cd ctvtcntr
+cargo install --path .
+```
 
+### Auto-start with Hyprland (exec-once)
+This is the simplest way to ensure ctvtcntr starts with your Hyprland session. 
+Add the following line to your ~/.config/hypr/hyprland.conf:
+```
+# Auto-start ctvtcntr for activity logging
+exec-once = ctvtcntr
+```
+records are stored in `~/.local/share/ctvtcntr/records.db`
+
+#### systemd initialization (restart-on-fail)
+If systemd is preffered(e.g for restart on fail), create the service file at `~/.config/systemd/user/ctvtcntr.service`:
 ```
 [Unit]
-Description=ctvtcntr is activity counter of mine
+Description=ctvtcntr is a simple Hyprland activity counter
 After=graphical-session.target
 
 [Service]
-; EnvironmentFile=/tmp/hypr/$HYPRLAND_INSTANCE_SIGNATURE/env
-WorkingDirectory=/home/tuturuu/dev/production/activity_counter/
-ExecStart=/home/tuturuu/dev/production/activity_counter/target/release/ctvtcntr
+; Assumes ctvtcntr is in your PATH
+ExecStart=ctvtcntr
 Restart=on-failure
-; ConditionPathExists=/tmp/hypr/$HYPRLAND_INSTANCE_SIGNATURE/env
 
 [Install]
 WantedBy=graphical-session.target
 ```
-then just
+Enable and start the service:
 
 ```sh
+systemctl --user daemon-reload
 systemctl --user enable ctvtcntr.service
 systemctl --user start ctvtcntr.service
 ```
 
-to check status do not forget add --user flag, otherwise it wont show it.
+Check the service status:
 ```sh
 systemctl status --user ctvtcntr
 ```
 
-if service loading fails during listeting for env, add following line in hyprland.conf
+🧐🧐🧐if service loading fails during listeting for env, add following line in hyprland.conf🧐🧐🧐
 ```config
 exec-once = systemctl --user import-environment XDG_RUNTIME_DIR HYPRLAND_INSTANCE_SIGNATURE
 ```
+This project is licensed under the [GNU General Public License v3.0 or later](https://www.gnu.org/licenses/gpl-3.0.txt).
+
+<!-- ; EnvironmentFile=/tmp/hypr/$HYPRLAND_INSTANCE_SIGNATURE/env add under service in unit if env isnt properly passed to the service -->
