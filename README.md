@@ -64,4 +64,6 @@ systemctl status --user ctvtcntr
 ```config
 exec-once = systemctl --user import-environment XDG_RUNTIME_DIR HYPRLAND_INSTANCE_SIGNATURE
 ```
+This project is licensed under the [GNU General Public License v3.0 or later](https://www.gnu.org/licenses/gpl-3.0.txt).
+
 <!-- ; EnvironmentFile=/tmp/hypr/$HYPRLAND_INSTANCE_SIGNATURE/env add under service in unit if env isnt properly passed to the service -->
