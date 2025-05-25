@@ -9,8 +9,10 @@ mod startup;
 use startup::wait_for_hyprland_socket;
 mod match_title;
 
+mod utils;
 use std::env;
 use std::path::PathBuf;
+use utils::get_app_data_dir;
 
 fn main() {
     tracing::subscriber::set_global_default(tracing_subscriber::FmtSubscriber::new())
@@ -20,10 +22,16 @@ fn main() {
     if let Err(e) = wait_for_hyprland_socket(60) {
         error!("Error waiting for Hyprland: {}", e);
     }
-    // Load data path exposed by build script
-    let data_dir_str = env!("CTVTCNTR_DATA_DIR");
-    let data_dir = PathBuf::from(data_dir_str);
-    let path_to_database_file = data_dir.join("records.db");
+    let path_to_database_file = match get_app_data_dir() {
+        Ok(mut app_data_dir) => {
+            app_data_dir.push("records.db");
+            app_data_dir
+        }
+        Err(e) => {
+            error!("Failed to get_app_data_dir: {}", e);
+            panic!("Critical error: Could not set up application data directory.");
+        }
+    };
     let conn = Connection::open(&path_to_database_file).unwrap();
     info!("connected to duckdb on {path_to_database_file:?}");
     ensure_table_exists(&conn).expect("ensuring failed");
