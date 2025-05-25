@@ -9,6 +9,9 @@ mod startup;
 use startup::wait_for_hyprland_socket;
 mod match_title;
 
+use std::env;
+use std::path::PathBuf;
+
 fn main() {
     tracing::subscriber::set_global_default(tracing_subscriber::FmtSubscriber::new())
         .expect("setting default subscriber failed");
@@ -17,8 +20,12 @@ fn main() {
     if let Err(e) = wait_for_hyprland_socket(60) {
         error!("Error waiting for Hyprland: {}", e);
     }
-    let conn = Connection::open("records.db").unwrap();
-    info!("connected to duckdb");
+    // Load data path exposed by build script
+    let data_dir_str = env!("CTVTCNTR_DATA_DIR");
+    let data_dir = PathBuf::from(data_dir_str);
+    let path_to_database_file = data_dir.join("records.db");
+    let conn = Connection::open(&path_to_database_file).unwrap();
+    info!("connected to duckdb on {path_to_database_file:?}");
     ensure_table_exists(&conn).expect("ensuring failed");
     info!("Table 'activity_log' ensured.");
     print_all_records(&conn);
