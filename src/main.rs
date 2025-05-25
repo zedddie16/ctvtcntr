@@ -7,8 +7,8 @@ mod startup;
 use startup::wait_for_hyprland_socket;
 mod match_title;
 
-use std::env;
-use std::path::PathBuf;
+mod utils;
+use utils::get_app_data_dir;
 
 fn main() -> io::Result<()> {
     tracing::subscriber::set_global_default(tracing_subscriber::FmtSubscriber::new())
@@ -20,13 +20,23 @@ fn main() -> io::Result<()> {
         error!("Error waiting for Hyprland: {}", e);
         return Err(io::Error::new(io::ErrorKind::Other, e));
     }
-
-    // Load data path exposed by build script
-    let data_dir_str = env!("CTVTCNTR_DATA_DIR");
-    let data_dir = PathBuf::from(data_dir_str);
-    let app_usage_file_path = data_dir.join("app_usage.csv");
-
+    let app_usage_file_path = match get_app_data_dir() {
+        Ok(mut app_data_dir) => {
+            app_data_dir.push("app_usage.csv");
+            app_data_dir
+        }
+        Err(e) => {
+            error!("Failed to get_app_data_dir: {}", e);
+            panic!("Critical error: Could not set up application data directory.");
+        }
+    };
     // Load existing usage data (if any), then start monitoring.
-    let mut usage_map = read_usage_data(&app_usage_file_path)?;
+    let mut usage_map = match read_usage_data(&app_usage_file_path) {
+        Ok(usage_map) => usage_map,
+        Err(e) => {
+            error!("failed to read_usage_data: {e}");
+            panic!("Critical error: Could not read app_usage.csv properly, aborting.");
+        }
+    };
     monitor_active_window(&mut usage_map, &app_usage_file_path)
 }
