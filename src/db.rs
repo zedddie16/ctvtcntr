@@ -1,5 +1,5 @@
-use chrono::{Datelike, NaiveDate, Utc};
-use duckdb::{params, Connection, Result, ToSql};
+use chrono::{NaiveDate, Utc};
+use duckdb::{params, Connection, Result};
 use tracing::info;
 
 use crate::logic::Usage;
