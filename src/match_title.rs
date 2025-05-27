@@ -22,21 +22,15 @@ pub fn process_complex_names(process_name: String, window: &Client) -> String {
         }
     }
 
-    if process_name.is_empty() {
-        if !window.class.is_empty() {
-            if process_name == "jetbrains-rustrover" {
-                if let Some(captures) = rexex_str.captures(window.title.as_str()) {
-                    if let Some(extracted_match) = captures.get(1) {
-                        return format!("RustRover -> {}", extracted_match.as_str());
-                    } else {
-                        return "RustRover".to_string();
-                    }
-                } else {
-                    return "RustRover".to_string();
-                }
+    if window.class == "jetbrains-rustrover" && process_name.is_empty() {
+        if let Some(cap) = rexex_str.captures(&window.title) {
+            if let Some(extracted_match) = cap.get(1) {
+                return format!("RustRover -> {}", extracted_match.as_str());
             }
         }
+        return "RustRover".to_string();
     }
+
     process_name
 }
 pub fn extract_process_name(window_title: &str) -> String {
