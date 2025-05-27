@@ -1,20 +1,20 @@
-use crate::db::{self, log_activity};
+use crate::db::log_activity;
 use crate::match_title::extract_process_name;
 use crate::match_title::process_complex_names;
+
 use chrono::Local;
-use csv::{ReaderBuilder, WriterBuilder};
+use serde::{Deserialize, Serialize};
+
 use hyprland::data::Client;
 use hyprland::shared::HyprDataActiveOptional;
-use serde::{Deserialize, Serialize};
-use std::collections::BTreeMap;
-use std::fs::File;
-use std::io::{self, BufReader};
+
+use std::io;
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::Arc;
 use std::thread::sleep;
+
 use std::time::{Duration, Instant};
-use tracing::error;
-use tracing::info;
+use tracing::{error, info};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Usage {
