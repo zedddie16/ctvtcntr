@@ -32,7 +32,8 @@ fn main() {
             panic!("Critical error: Could not set up application data directory.");
         }
     };
-    let conn = Connection::open(&path_to_database_file).unwrap();
+    let conn = Connection::open(&path_to_database_file)
+        .expect("Failed to connect to a database on: {&path_to_database}");
     info!("connected to duckdb on {path_to_database_file:?}");
     ensure_table_exists(&conn).expect("ensuring failed");
     info!("Table 'activity_log' ensured.");

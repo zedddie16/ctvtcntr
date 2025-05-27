@@ -14,7 +14,6 @@ pub fn process_complex_names(process_name: String, window: &Client) -> String {
         }
     }
     // Handle Kitty windows running nvim
-    // TODO: move these checks to match_title module
     if window.class == "kitty" {
         if window.title.contains("nvim") {
             return "Vim".to_string();
@@ -23,7 +22,6 @@ pub fn process_complex_names(process_name: String, window: &Client) -> String {
         }
     }
 
-    // TODO: move these checks to match_title module
     if process_name.is_empty() {
         if !window.class.is_empty() {
             if process_name == "jetbrains-rustrover" {
