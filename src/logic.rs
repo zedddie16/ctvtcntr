@@ -3,7 +3,6 @@ use crate::match_title::extract_process_name;
 use crate::match_title::process_complex_names;
 
 use chrono::Local;
-use serde::{Deserialize, Serialize};
 
 use hyprland::data::Client;
 use hyprland::shared::HyprDataActiveOptional;
@@ -16,7 +15,7 @@ use std::thread::sleep;
 use std::time::{Duration, Instant};
 use tracing::{error, info};
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug)]
 pub struct Usage {
     pub date: String,
     pub window_name: String,
