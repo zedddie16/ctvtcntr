@@ -5,7 +5,9 @@ use regex::Regex;
 /// - If the title starts with "New Tab -", that prefix is removed (case‑insensitive).
 /// - If a " | " separator is present, only the part before it is used.
 pub fn process_complex_names(process_name: String, window: &Client) -> String {
-    let rexex_str = Regex::new(r"^(.+?)\s*–\s*").unwrap(); // trims active title of app
+    // Matches and captures the
+    // shortest prefix before " – " e.g. project name before separator.
+    let rexex_str = Regex::new(r"^(.+?)\s*–\s*").unwrap();
     if window.class == "com.mitchellh.ghostty" {
         if window.title.contains("nvim") {
             return "NeoVim".to_string();
