@@ -1,4 +1,7 @@
-# ctvtcntr 
+
+# ctvtcntr
+[![Rust](https://github.com/zedddie16/ctvtcntr/actions/workflows/krab.yml/badge.svg?branch=master)](https://github.com/zedddie16/ctvtcntr/actions/workflows/krab.yml)
+
 ctvtcntr (activity counter) is a simple activity monitoring app for hyprland
 just a silly project of mine to know how much time I spend by playing games, searching web, coding and etc.
 
@@ -31,6 +34,7 @@ Add the following line to your ~/.config/hypr/hyprland.conf:
 exec-once = ctvtcntr
 ```
 records are stored in `~/.local/share/ctvtcntr/records.db`
+
 
 #### systemd initialization (restart-on-fail)
 If systemd is preffered(e.g for restart on fail), create the service file at `~/.config/systemd/user/ctvtcntr.service`:

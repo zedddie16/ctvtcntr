@@ -2,12 +2,11 @@ use duckdb::Connection;
 use tracing::{error, info};
 
 mod errors;
-
+mod match_title;
 mod db;
 use db::{ensure_table_exists, print_all_records};
 
 mod logic;
-mod match_title;
 use logic::monitor_active_window;
 
 mod startup;
@@ -24,6 +23,7 @@ fn main() {
     if let Err(e) = wait_for_hyprland_socket(60) {
         error!("Error waiting for Hyprland: {}", e);
     }
+  
     let path_to_database_file = match get_app_data_dir() {
         Ok(mut app_data_dir) => {
             app_data_dir.push("records.db");

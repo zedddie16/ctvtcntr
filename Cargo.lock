@@ -403,6 +403,7 @@ dependencies = [
  "num-traits",
  "wasm-bindgen",
  "windows-link",
+
 ]
 
 [[package]]
@@ -433,6 +434,7 @@ dependencies = [
  "getrandom 0.2.16",
  "once_cell",
  "tiny-keccak",
+
 ]
 
 [[package]]
@@ -489,7 +491,7 @@ dependencies = [
 
 [[package]]
 name = "ctvtcntr"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "chrono",
  "csv",
@@ -860,6 +862,7 @@ version = "0.2.172"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d750af042f7ef4f724306de029d18836c26c1765a54a6a3f094cbd23a7267ffa"
 
+
 [[package]]
 name = "libduckdb-sys"
 version = "1.2.2"
@@ -897,6 +900,7 @@ name = "linux-raw-sys"
 version = "0.9.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "cd945864f07fe9f5371a27ad7b52a172b4b499999f1d97574c9fa68373937e12"
+
 
 [[package]]
 name = "log"
@@ -999,6 +1003,7 @@ name = "num-iter"
 version = "0.1.45"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1429034a0490724d0075ebb2bc9e875d6503c3cf69e235a8941aa757d83ef5bf"
+
 dependencies = [
  "autocfg",
  "num-integer",
@@ -1234,6 +1239,7 @@ checksum = "809e8dc61f6de73b46c85f4c96486310fe304c434cfa43669d7b40f711150908"
 dependencies = [
  "aho-corasick",
  "memchr",
+ "regex-automata",
  "regex-syntax",
 ]
 
@@ -1296,6 +1302,12 @@ dependencies = [
  "serde",
  "serde_json",
 ]
+
+[[package]]
+name = "regex-syntax"
+version = "0.8.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2b15c43186be67a4fd63bee50d0303afffcef381492ebe2c5d87f324e1b8815c"
 
 [[package]]
 name = "rustc-demangle"
@@ -1505,6 +1517,7 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn 2.0.101",
+
 ]
 
 [[package]]
@@ -1847,6 +1860,12 @@ checksum = "56e6c93f3a0c3b36176cb1327a4958a0353d5d166c2a35cb268ace15e91d3b57"
 dependencies = [
  "windows-link",
 ]
+
+[[package]]
+name = "windows-link"
+version = "0.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "76840935b766e1b0a05c0066835fb9ec80071d4c09a16f6bd5f7e655e3c14c38"
 
 [[package]]
 name = "windows-sys"
