@@ -1,3 +1,4 @@
+
 # ctvtcntr
 [![Rust](https://github.com/zedddie16/ctvtcntr/actions/workflows/krab.yml/badge.svg?branch=master)](https://github.com/zedddie16/ctvtcntr/actions/workflows/krab.yml)
 
@@ -6,7 +7,7 @@ just a silly project of mine to know how much time I spend by playing games, sea
 
 ### Todos
 1. [x] - basic activity counter application
-2. [ ] - duckdb integration 
+2. [x] - duckdb integration 
 3. [ ] - telegram bot for data visualising
 
 ## How to use
@@ -32,7 +33,8 @@ Add the following line to your ~/.config/hypr/hyprland.conf:
 # Auto-start ctvtcntr for activity logging
 exec-once = ctvtcntr
 ```
-records are stored in `~/.local/share/ctvtcntr/app_usage.csv`
+records are stored in `~/.local/share/ctvtcntr/records.db`
+
 
 #### systemd initialization (restart-on-fail)
 If systemd is preffered(e.g for restart on fail), create the service file at `~/.config/systemd/user/ctvtcntr.service`:

@@ -1,3 +1,5 @@
+// Waiting for socket is basically only needed if systemd is chosen and preffered as loader
+// of ctvtntr.
 use std::env;
 use std::path::Path;
 use std::thread::sleep;

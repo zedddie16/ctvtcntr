@@ -1,28 +1,32 @@
-use std::io;
-use tracing::error;
+use duckdb::Connection;
+use tracing::{error, info};
+
+mod errors;
+mod match_title;
+mod db;
+use db::{ensure_table_exists, print_all_records};
 
 mod logic;
-use logic::{monitor_active_window, read_usage_data};
+use logic::monitor_active_window;
+
 mod startup;
 use startup::wait_for_hyprland_socket;
-mod match_title;
 
 mod utils;
 use utils::get_app_data_dir;
 
-fn main() -> io::Result<()> {
+fn main() {
     tracing::subscriber::set_global_default(tracing_subscriber::FmtSubscriber::new())
         .expect("setting default subscriber failed");
 
     // wait for hyprland IPC
     if let Err(e) = wait_for_hyprland_socket(60) {
-        // Wait for up to 60 seconds
         error!("Error waiting for Hyprland: {}", e);
-        return Err(io::Error::new(io::ErrorKind::Other, e));
     }
-    let app_usage_file_path = match get_app_data_dir() {
+  
+    let path_to_database_file = match get_app_data_dir() {
         Ok(mut app_data_dir) => {
-            app_data_dir.push("app_usage.csv");
+            app_data_dir.push("records.db");
             app_data_dir
         }
         Err(e) => {
@@ -30,13 +34,15 @@ fn main() -> io::Result<()> {
             panic!("Critical error: Could not set up application data directory.");
         }
     };
-    // Load existing usage data (if any), then start monitoring.
-    let mut usage_map = match read_usage_data(&app_usage_file_path) {
-        Ok(usage_map) => usage_map,
-        Err(e) => {
-            error!("failed to read_usage_data: {e}");
-            panic!("Critical error: Could not read app_usage.csv properly, aborting.");
-        }
-    };
-    monitor_active_window(&mut usage_map, &app_usage_file_path)
+
+    info!("Trying to connect to DB at: {path_to_database_file:?}");
+    let conn = Connection::open(&path_to_database_file).expect("Failed to connect to DuckDB");
+    info!("connected to duckdb on {path_to_database_file:?}");
+
+    info!("Trying to ensure Table 'activity_log'");
+    ensure_table_exists(&conn).expect("ensuring failed");
+    info!("Table 'activity_log' ensured.");
+
+    print_all_records(&conn).expect("Failed to print_all_records");
+    monitor_active_window(conn).expect("failed to start active monitor window loop");
 }
