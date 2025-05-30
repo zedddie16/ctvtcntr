@@ -7,15 +7,24 @@ use crate::logic::Usage;
 /// Initialize the database and create the table if it doesn't exist
 pub fn ensure_table_exists(conn: &Connection) -> Result<()> {
     conn.execute(
-        "CREATE TABLE IF NOT EXISTS activity_log (
-            date DATE,
-            window_name VARCHAR,
-            usage_time_secs INTEGER,
-            PRIMARY KEY (date, window_name)
+        "CREATE TABLE IF NOT EXISTS window_log (
+            id BIGINT PRIMARY KEY AUTOINCREMENT,
+            window_name VARCHAR NOT NULL,
+            window_sub_name VARCHAR NOT NULL,
+            class VARCHAR NOT NULL 
         )",
         [],
     )?;
     info!("table ensured");
+    conn.execute(
+        "CREATE TABLE IF NOT EXISTS window_date_log (
+            id BIGINT NOT NULL REFERENCES window_log(id),
+            ts TIMESTAMP NOT NULL,
+            dur INTEGER NOT NULL,
+            PRIMARY KEY (id, ts)
+        )",
+        [],
+    )?;
     Ok(())
 }
 
