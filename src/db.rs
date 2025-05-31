@@ -8,7 +8,7 @@ use crate::logic::Usage;
 pub fn ensure_table_exists(conn: &Connection) -> Result<()> {
     conn.execute(
         "CREATE TABLE IF NOT EXISTS window_log (
-            id BIGINT PRIMARY KEY AUTOINCREMENT,
+            id BIGINT PRIMARY KEY,
             window_name VARCHAR NOT NULL,
             window_sub_name VARCHAR NOT NULL,
             class VARCHAR NOT NULL 
