@@ -1,7 +1,7 @@
 [package]
 name = "ctvtcntr"
 description = "A simple yet powerful hyprland activity logger"
-version = "0.1.1"
+version = "0.2.0"
 repository = "https://github.com/zedddie16/ctvtcntr"
 edition = "2021"
 authors = ["zedddie16 <zedddiezxc@gmail.com>"]
