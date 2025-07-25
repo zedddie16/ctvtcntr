@@ -43,6 +43,9 @@ pub fn monitor_active_window(conn: duckdb::Connection) -> io::Result<()> {
     while running.load(Ordering::SeqCst) {
         // loop start
         let current_date = Local::now().format("%Y-%m-%d").to_string();
+        //TODO: after we get active window and process it we will need to divide it and
+        //refactor extract_process_name or process_complex_names to return both
+        //window name and window sub name
         if let Ok(Some(active_window)) = Client::get_active() {
             let raw_title = active_window.initial_title.clone();
             let mut process_name = extract_process_name(&raw_title);

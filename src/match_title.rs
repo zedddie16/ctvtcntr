@@ -5,6 +5,8 @@ use regex::Regex;
 /// - If the title starts with "New Tab -", that prefix is removed (case‑insensitive).
 /// - If a " | " separator is present, only the part before it is used.
 pub fn process_complex_names(process_name: String, window: &Client) -> String {
+    //TODO: refactor fn to return both window_name and window_sub_name
+
     // Matches and captures the
     // shortest prefix before " – " e.g. project name before separator.
     let rexex_str = Regex::new(r"^(.+?)\s*–\s*").unwrap();
