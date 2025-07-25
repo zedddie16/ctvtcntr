@@ -48,8 +48,8 @@ pub fn monitor_active_window(conn: duckdb::Connection) -> io::Result<()> {
         //window name and window sub name
         if let Ok(Some(active_window)) = Client::get_active() {
             let raw_title = active_window.initial_title.clone();
-            let mut process_name = extract_process_name(&raw_title);
-            process_name = process_complex_names(process_name, &active_window);
+            let process_name =
+                process_complex_names(extract_process_name(&raw_title), &active_window);
             let current_key = (current_date.clone(), process_name);
             if last_key.as_ref() != Some(&current_key) {
                 if let Some(ref prev_key) = last_key {
