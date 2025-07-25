@@ -32,6 +32,9 @@ pub fn ensure_table_exists(conn: &Connection) -> Result<()> {
 /// If a record for the app_name and today's date exists, its usage_time_seconds is incremented
 /// Otherwise, a new record is inserted
 pub fn log_activity(conn: &Connection, window_name: &str, usage_increment_secs: u64) -> Result<()> {
+    //NOTE: to rebuild log activity we'll need to refactor match title and logic modules to
+    //ensure they divide both window name, window_sub_name, and add class list and classify each
+    //window.
     let today_naive: NaiveDate = Utc::now().date_naive();
 
     let sql = "
