@@ -50,15 +50,19 @@ pub fn monitor_active_window(conn: duckdb::Connection) -> io::Result<()> {
             let raw_title = active_window.initial_title.clone();
             let process_name =
                 process_complex_names(extract_process_name(&raw_title), &active_window);
+
             let current_key = (current_date.clone(), process_name);
+
             if last_key.as_ref() != Some(&current_key) {
                 if let Some(ref prev_key) = last_key {
                     let elapsed = last_switch_time.elapsed();
+
                     log_activity(&conn, &prev_key.1, elapsed.as_secs())
                         .expect("failed to log activity");
                 }
                 last_key = Some(current_key.clone());
                 last_switch_time = Instant::now();
+
                 info!("switched to: {}", current_key.1);
             }
         }
