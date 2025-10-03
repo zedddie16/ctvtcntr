@@ -45,6 +45,6 @@ fn main() {
     ensure_table_exists(&conn).expect("ensuring failed");
     info!("DB Tables successfuly ensured.");
 
-    print_all_records(&conn).expect("Failed to print_all_records");
+    // print_all_records(&conn).expect("Failed to print_all_records");
     monitor_active_window(conn).expect("failed to start active monitor window loop");
 }
