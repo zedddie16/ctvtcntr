@@ -41,9 +41,9 @@ fn main() {
     let conn = Connection::open(&path_to_database_file).expect("Failed to connect to DuckDB");
     info!("connected to duckdb on {path_to_database_file:?}");
 
-    info!("Trying to ensure Table 'activity_log'");
+    info!("Trying to ensure Tables 'window_log' & 'window_date_log'");
     ensure_table_exists(&conn).expect("ensuring failed");
-    info!("Table 'activity_log' ensured.");
+    info!("DB Tables successfuly ensured.");
 
     print_all_records(&conn).expect("Failed to print_all_records");
     monitor_active_window(conn).expect("failed to start active monitor window loop");
