@@ -15,7 +15,7 @@ pub fn ensure_table_exists(conn: &Connection) -> Result<()> {
         )",
         [],
     )?;
-    info!("table ensured");
+    info!("table 'window_log' ensured");
     conn.execute(
         "CREATE TABLE IF NOT EXISTS window_date_log (
             id BIGINT NOT NULL REFERENCES window_log(id),
@@ -25,6 +25,7 @@ pub fn ensure_table_exists(conn: &Connection) -> Result<()> {
         )",
         [],
     )?;
+    info!("table 'window_date_log' ensured");
     Ok(())
 }
 
