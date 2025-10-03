@@ -56,6 +56,7 @@ pub fn log_activity(conn: &Connection, window_name: &str, usage_increment_secs: 
 
 /// Query and display all records (testing)
 pub fn print_all_records(conn: &Connection) -> Result<()> {
+    // TODO: refactor to use newer tables
     println!("\n--- All Records ---");
     let mut stmt = conn.prepare(
         "SELECT date, window_name, usage_time_secs FROM activity_log ORDER BY date, window_name",
@@ -85,6 +86,7 @@ pub fn print_all_records(conn: &Connection) -> Result<()> {
 
 /// Query usage for a specific app on a specific date
 pub fn get_usage_for_app_on_date(
+    // TODO: refactor to use newer tables
     conn: &Connection,
     window_name: &str,
     date: NaiveDate,
