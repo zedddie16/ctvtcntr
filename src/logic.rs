@@ -21,6 +21,58 @@ pub struct Usage {
     pub window_name: String,
     pub usage_time_secs: u64,
 }
+
+pub struct WindowData {
+    pub title: String,
+    pub class: String,
+    pub initial_class: String,
+    pub initial_title: String,
+}
+
+// pub struct Client {
+//     /// The client's [`Address`][crate::shared::Address]
+//     pub address: Address,
+//     /// The window location
+//     pub at: (i16, i16),
+//     /// The window size
+//     pub size: (i16, i16),
+//     /// The workspace its on
+//     pub workspace: WorkspaceBasic,
+//     /// Is this window floating?
+//     pub floating: bool,
+//     /// The internal fullscreen mode
+//     pub fullscreen: FullscreenMode,
+//     /// The client fullscreen mode
+//     #[serde(rename = "fullscreenClient")]
+//     pub fullscreen_client: FullscreenMode,
+//     /// The monitor id the window is on
+//     pub monitor: MonitorId,
+//     /// The initial window class
+//     #[serde(rename = "initialClass")]
+//     pub initial_class: String,
+//     /// The window class
+//     pub class: String,
+//     /// The initial window title
+//     #[serde(rename = "initialTitle")]
+//     pub initial_title: String,
+//     /// The window title
+//     pub title: String,
+//     /// The process Id of the client
+//     pub pid: i32,
+//     /// Is this window running under XWayland?
+//     pub xwayland: bool,
+//     /// Is this window pinned?
+//     pub pinned: bool,
+//     /// Group members
+//     pub grouped: Vec<Box<Address>>,
+//     /// Is this window print on screen
+//     pub mapped: bool,
+//     /// The swallowed window
+//     pub swallowing: Option<Box<Address>>,
+//     /// When was this window last focused relatively to other windows? 0 for current, 1 previous, 2 previous before that, etc
+//     #[serde(rename = "focusHistoryID")]
+//     pub focus_history_id: i8,
+// }
 struct ThisThingWillNeverBeUsed {}
 /// Updates the usage map by adding elapsed time for the given (date, window_name) key.
 /// Monitors the active window and updates usage data:
