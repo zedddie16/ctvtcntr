@@ -37,6 +37,7 @@ pub fn process_complex_names(process_name: String, window: &Client) -> String {
 
     process_name
 }
+// this
 pub fn extract_process_name(window_title: &str) -> String {
     let trimmed = &window_title.trim();
 

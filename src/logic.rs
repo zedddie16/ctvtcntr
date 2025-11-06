@@ -132,3 +132,9 @@ pub fn monitor_active_window(conn: duckdb::Connection) -> io::Result<()> {
     info!("Shutting down");
     Ok(())
 }
+
+// some logic  NOTE:
+// as i am trying to implement relative db approach, with activity chains and classes, I need
+// to rebuild whole match_title.rs logic, change approach of just getting one String type name to
+// actually build a struct with window_name, window_sub_name, class, and second struct which will
+// contain duration as well as date. (ids of )
