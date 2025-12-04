@@ -105,6 +105,12 @@ pub fn monitor_active_window(conn: duckdb::Connection) -> io::Result<()> {
 
             let current_key = (current_date.clone(), process_name);
 
+            // these errors are occuring as i havent adapted main logic to use new
+            // struct yet, also new struct will change basic logic as any window_sub_name change
+            // will invoke change of the 'key'
+
+            // to fix them adapt logic to use WindowData Structure instead of String Tuple
+            // (keep the date and change process_name field to WindowData)
             if last_key.as_ref() != Some(&current_key) {
                 if let Some(ref prev_key) = last_key {
                     let elapsed = last_switch_time.elapsed();
