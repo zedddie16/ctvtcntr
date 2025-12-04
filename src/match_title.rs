@@ -1,5 +1,11 @@
 use hyprland::data::Client;
 use regex::Regex;
+
+#[allow(dead_code)]
+pub struct WindowData {
+    window_name: String,
+    window_sub_name: String,
+}
 /// Normalizes the window title into a process name:
 /// - Trims whitespace.
 /// - If the title starts with "New Tab -", that prefix is removed (case‑insensitive).
@@ -16,7 +22,8 @@ pub fn process_complex_names(process_name: String, window: &Client) -> String {
 
     // Matches and captures the
     // shortest prefix before " – " e.g. project name before separator.
-    let rexex_str = Regex::new(r"^(.+?)\s*–\s*").unwrap();
+    let rexex_str = Regex::new(r"^(.+?)\s*–\s*").unwrap(); // lol i just noticed i misspeled
+                                                           // regex but it look funnny so I will keep it like that
     if window.class == "com.mitchellh.ghostty" {
         if window.title.contains("nvim") {
             return "NeoVim".to_string();
