@@ -99,7 +99,7 @@ pub fn monitor_active_window(conn: duckdb::Connection) -> io::Result<()> {
         //refactor extract_process_name or process_complex_names to return both
         //window name and window sub name
         if let Ok(Some(active_window)) = Client::get_active() {
-            // let raw_title = active_window.initial_title.clone();
+            let raw_title = active_window.initial_title.clone();
             let process_name =
                 process_complex_names(extract_process_name(&raw_title), &active_window);
 

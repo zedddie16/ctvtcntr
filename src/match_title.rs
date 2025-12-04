@@ -6,6 +6,13 @@ use regex::Regex;
 /// - If a " | " separator is present, only the part before it is used.
 pub fn process_complex_names(process_name: String, window: &Client) -> String {
     //TODO: refactor fn to return both window_name and window_sub_name
+    //
+    // window_name comes from :
+    // class; initialClass; initialTitle;
+    // window_sub_name comes from:
+    // title (i guess trimmed and processed)
+    // title must be trimmed as it usually have window_name info which will be redundant
+    // but acceptable for early stage development.
 
     // Matches and captures the
     // shortest prefix before " – " e.g. project name before separator.
