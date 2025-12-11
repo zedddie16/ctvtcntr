@@ -1,6 +1,7 @@
 use crate::db::log_activity;
 use crate::match_title::extract_process_name;
 use crate::match_title::process_complex_names;
+use crate::match_title::WindowData;
 
 use chrono::Local;
 
@@ -22,12 +23,12 @@ pub struct Usage {
     pub usage_time_secs: u64,
 }
 
-pub struct WindowData {
-    pub title: String,
-    pub class: String,
-    pub initial_class: String,
-    pub initial_title: String,
-}
+// pub struct WindowData {
+//     pub title: String,
+//     pub class: String,
+//     pub initial_class: String,
+//     pub initial_title: String,
+// }
 
 // pub struct Client {
 //     /// The client's [`Address`][crate::shared::Address]
@@ -88,7 +89,7 @@ pub fn monitor_active_window(conn: duckdb::Connection) -> io::Result<()> {
     })
     .expect("Error setting Ctrl+C handler");
 
-    let mut last_key: Option<(String, String)> = None; // (date, process name)
+    let mut last_key: Option<(String, WindowData)> = None; // (date, process name)
     let mut last_switch_time = Instant::now();
 
     info!("starting active window monitor loop");
@@ -121,7 +122,7 @@ pub fn monitor_active_window(conn: duckdb::Connection) -> io::Result<()> {
                 last_key = Some(current_key.clone());
                 last_switch_time = Instant::now();
 
-                info!("switched to: {}", current_key.1);
+                info!("switched to: {}", current_key.1.window_name);
             }
         }
         sleep(Duration::from_millis(500));

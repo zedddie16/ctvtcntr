@@ -1,10 +1,10 @@
 use hyprland::data::Client;
 use regex::Regex;
 
-#[allow(dead_code)]
+#[derive(Clone, PartialEq)]
 pub struct WindowData {
-    window_name: String,
-    window_sub_name: String,
+    pub window_name: String,
+    pub window_sub_name: String,
 }
 /// Normalizes the window title into a process name:
 /// - Trims whitespace.
